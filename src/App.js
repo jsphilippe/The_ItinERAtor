@@ -161,6 +161,7 @@ export default function App() {
             validateTrip={validateTrip}
             onComplete={() => {
               completeSystem("systemA");
+              setTripType("oneWay"); // Reset trip type for system B
               setPhase("systemB");
             }}
           />

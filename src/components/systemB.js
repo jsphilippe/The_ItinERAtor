@@ -24,8 +24,6 @@ export default function SystemB({
   // State
   // -----------------------------
   const [form, setForm] = useState(emptyForm());
-  const [attempted, setAttempted] = useState(false);
-  const [attemptResult, setAttemptResult] = useState(null);
 
   const [successfulItineraries, setSuccessfulItineraries] = useState({
     oneWay: null,
@@ -40,8 +38,6 @@ export default function SystemB({
   // -----------------------------
   useEffect(() => {
     setForm(emptyForm());
-    setAttempted(false);
-    setAttemptResult(null);
   }, [tripType]);
 
   // -----------------------------
@@ -131,7 +127,7 @@ export default function SystemB({
   }, [flights, form.origin, tripType]);
 
   // -----------------------------
-  // Viable departure dates
+  // Viable departure dates (one way and round trip)
   // -----------------------------
   const viableDepartDates = useMemo(() => {
     if (!form.origin || !form.destination) return [];
@@ -227,7 +223,6 @@ export default function SystemB({
   // -----------------------------
   const submitSystemB = () => {
     logEvent("systemB", "submit_search", { ...form, tripType });
-    setAttempted(true);
 
     let found = [];
 
@@ -247,6 +242,7 @@ export default function SystemB({
           f.destination === form.destination &&
           f.departDate === form.departDate
       );
+
       const inbound = flights.filter(
         f =>
           f.origin === form.destination &&
@@ -263,11 +259,13 @@ export default function SystemB({
     if (tripType === "multiCity") {
       const valid = form.legs.every((leg, i) => {
         if (!leg.origin || !leg.destination || !leg.departDate) return false;
+
         if (i > 0) {
           const prev = form.legs[i - 1];
           if (leg.origin !== prev.destination) return false;
           if (new Date(leg.departDate) < new Date(prev.departDate)) return false;
         }
+
         return flights.some(
           f =>
             f.origin === leg.origin &&
@@ -278,8 +276,6 @@ export default function SystemB({
 
       found = valid ? form.legs : [];
     }
-
-    setAttemptResult(found);
 
     if (found.length > 0) {
       if (!firstSuccessTime) {
@@ -305,8 +301,6 @@ export default function SystemB({
     });
 
     setForm(emptyForm());
-    setAttempted(false);
-    setAttemptResult(null);
     setSuccessfulItineraries(prev => ({
       ...prev,
       [tripType]: null
@@ -327,6 +321,107 @@ export default function SystemB({
   return (
     <>
       <h1>System B: Guided Search</h1>
+
+      {tripType === "multiCity" && (
+        <>
+          <h3>Flight Legs</h3>
+
+          {form.legs.map((leg, i) => {
+            const legDates =
+              leg.origin && leg.destination
+                ? [
+                    ...new Set(
+                      flights
+                        .filter(
+                          f =>
+                            f.origin === leg.origin &&
+                            f.destination === leg.destination
+                        )
+                        .map(f => f.departDate)
+                    )
+                  ]
+                : [];
+
+            const bounds =
+              legDates.length === 0
+                ? { min: "", max: "" }
+                : {
+                    min: legDates.sort()[0],
+                    max: legDates.sort()[legDates.length - 1]
+                  };
+
+            const previousDate =
+              i > 0 ? form.legs[i - 1].departDate : null;
+
+            const effectiveMin =
+              previousDate && bounds.min
+                ? previousDate > bounds.min
+                  ? previousDate
+                  : bounds.min
+                : bounds.min;
+
+            return (
+              <div key={i} style={{ marginBottom: 12 }}>
+                <select
+                  value={leg.origin}
+                  disabled={i > 0}
+                  onChange={e =>
+                    updateLeg(i, "origin", e.target.value)
+                  }
+                >
+                  <option value="">Origin</option>
+                  {viableOrigins.map(o => (
+                    <option key={o} value={o}>{o}</option>
+                  ))}
+                </select>
+
+                <select
+                  value={leg.destination}
+                  onChange={e =>
+                    updateLeg(i, "destination", e.target.value)
+                  }
+                >
+                  <option value="">Destination</option>
+                  {[
+                    ...new Set(
+                      flights
+                        .filter(f => f.origin === leg.origin)
+                        .map(f => f.destination)
+                    )
+                  ]
+                    .filter(dest =>
+                      flights.some(next => next.origin === dest)
+                    )
+                    .map(d => (
+                      <option key={d} value={d}>{d}</option>
+                    ))}
+                </select>
+
+                <input
+                  type="date"
+                  min={effectiveMin}
+                  max={bounds.max}
+                  value={leg.departDate}
+                  onChange={e => {
+                    const value = e.target.value;
+                    if (!legDates.includes(value)) return;
+                    if (previousDate && value < previousDate) return;
+                    updateLeg(i, "departDate", value);
+                  }}
+                />
+
+                {i > 0 && (
+                  <button onClick={() => deleteLeg(i)}>
+                    Remove
+                  </button>
+                )}
+              </div>
+            );
+          })}
+
+          <button onClick={addLeg}>+ Add Leg</button>
+        </>
+      )}
 
       {tripType !== "multiCity" && (
         <>
@@ -421,60 +516,6 @@ export default function SystemB({
         </>
       )}
 
-      {tripType === "multiCity" && (
-        <>
-          <h3>Flight Legs</h3>
-
-          {form.legs.map((leg, i) => (
-            <div key={i} style={{ marginBottom: 12 }}>
-              <select
-                value={leg.origin}
-                disabled={i > 0}
-                onChange={e => updateLeg(i, "origin", e.target.value)}
-              >
-                <option value="">Origin</option>
-                {viableOrigins.map(o => (
-                  <option key={o} value={o}>{o}</option>
-                ))}
-              </select>
-
-              <select
-                value={leg.destination}
-                onChange={e => updateLeg(i, "destination", e.target.value)}
-              >
-                <option value="">Destination</option>
-                {
-                  [...new Set(
-                    flights
-                      .filter(f => f.origin === leg.origin)
-                      .map(f => f.destination)
-                  )]
-                  .filter(dest =>
-                    flights.some(next => next.origin === dest)
-                  )
-                  .map(d => (
-                    <option key={d} value={d}>{d}</option>
-                  ))
-                }
-              </select>
-
-              <input
-                type="date"
-                min={i > 0 ? form.legs[i - 1].departDate : undefined}
-                value={leg.departDate}
-                onChange={e => updateLeg(i, "departDate", e.target.value)}
-              />
-
-              {i > 0 && (
-                <button onClick={() => deleteLeg(i)}>Remove</button>
-              )}
-            </div>
-          ))}
-
-          <button onClick={addLeg}>+ Add Leg</button>
-        </>
-      )}
-
       <br />
 
       <button onClick={submitSystemB}>Search</button>
@@ -494,7 +535,7 @@ export default function SystemB({
 
       {!canContinue && (
         <p style={{ color: "#666" }}>
-          Complete One-Way, Round-Trip, and Multi-City searches to proceed.
+          Complete One Way, Round Trip, and Multi City searches to proceed.
         </p>
       )}
 

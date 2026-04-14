@@ -58,7 +58,7 @@ export default function SystemA({
   }, [tripType]);
 
   // -----------------------------
-  // Multi-city helpers
+  // Multi city helpers
   // -----------------------------
   const updateLeg = (index, field, value) => {
     setForm(prev => {
@@ -203,30 +203,28 @@ export default function SystemA({
       }));
       setCurrentHint(null);
     } else {
-      setFailureCounts(prev => {
-        const next = {
-          ...prev,
-          [tripType]: prev[tripType] + 1
-        };
+      const nextFailureCount = failureCounts[tripType] + 1;
 
-        const hint = getHint({
-          tripType,
-          failureCount: next[tripType],
-          lastAttempt: form,
-          flightFacts
-        });
+      setFailureCounts(prev => ({
+        ...prev,
+        [tripType]: nextFailureCount
+      }));
 
-        if (hint) {
-          setCurrentHint(hint);
-          logEvent("systemA", "hint_shown", {
-            tripType,
-            hintType: hint.type,
-            failureCount: next[tripType]
-          });
-        }
-
-        return next;
+      const hint = getHint({
+        tripType,
+        failureCount: nextFailureCount,
+        lastAttempt: form,
+        flightFacts
       });
+
+      if (hint) {
+        setCurrentHint(hint);
+        logEvent("systemA", "hint_shown", {
+          tripType,
+          hintType: hint.type,
+          failureCount: nextFailureCount
+        });
+      }
     }
 
     logEvent(
@@ -249,10 +247,14 @@ export default function SystemA({
     setAttempted(false);
     setAttemptResult(null);
     setCurrentHint(null);
+    setSuccessfulItineraries(prev => ({
+      ...prev,
+      [tripType]: null
+    }));
   };
 
   // -----------------------------
-  // ✅ Correct System A completion gate
+  // Completion gate
   // -----------------------------
   const canContinue =
     successfulItineraries.oneWay &&
@@ -266,7 +268,6 @@ export default function SystemA({
     <>
       <h1>System A: Flexible Search</h1>
 
-      {/* One-Way and Round-Trip */}
       {tripType !== "multiCity" && (
         <>
           <label>
@@ -335,7 +336,6 @@ export default function SystemA({
         </>
       )}
 
-      {/* Multi-City */}
       {tripType === "multiCity" && (
         <>
           <h3>Flight Legs</h3>
@@ -427,7 +427,7 @@ export default function SystemA({
 
       {!canContinue && (
         <p style={{ color: "#666", marginTop: 8 }}>
-          Complete One-Way, Round-Trip, and Multi-City searches to proceed.
+          Complete One Way, Round Trip, and Multi City searches to proceed.
         </p>
       )}
 
