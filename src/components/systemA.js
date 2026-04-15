@@ -177,7 +177,7 @@ export default function SystemA({
         returnDate: ""
       }));
     }
-  }, [form.departDate, tripType]);
+  }, [form.departDate, form.returnDate, tripType]);
 
   const returnMin = (() => {
     if (!tripType === "roundTrip") return undefined;
