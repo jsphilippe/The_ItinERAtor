@@ -1,4 +1,6 @@
-// useTripValidation.js - Custom React hook for validating trip itineraries against a dataset of flights. Provides functions to check the validity of one-way, round-trip, and multi-city itineraries based on date ordering and flight existence rules.
+// useTripValidation.js
+// Custom React hook for validating trip itineraries against a dataset of flights.
+// Provides functions to check the validity of one-way, round-trip, and multi-city itineraries based on date ordering and flight existence rules.
 
 export default function useTripValidation(flights) {
   // -----------------------------
