@@ -1,4 +1,6 @@
-// flights.js - Dataset of flights with structured but dense route graph, designed for testing itinerary search systems under conditions of ambiguity and distractors.
+// flights.js
+// Dataset of flights with structured but dense route graph, designed for testing
+// itinerary search systems under conditions of ambiguity and distractors.
 
 function generateDateRange(minDate, maxDate) {
   const dates = [];
