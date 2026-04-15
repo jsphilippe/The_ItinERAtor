@@ -28,7 +28,7 @@ export default function SystemA({
   });
 
   const sameAirport = (a, b) => a && b && a === b;
-  
+
   const toISO = d => d.toISOString().split("T")[0];
 
   const addDays = (dateStr, days) => {
@@ -149,15 +149,55 @@ export default function SystemA({
   };
 
   // -----------------------------
-  // Soft date bounds (additive)
+  // Date bounds
   // -----------------------------
-  const dateBounds =
-    tripType !== "multiCity"
+  const outboundBounds =
+    tripType === "roundTrip" || tripType === "oneWay"
       ? getDateBoundsForPair(form.origin, form.destination)
       : null;
 
+  const inboundBounds =
+    tripType === "roundTrip"
+      ? getDateBoundsForPair(form.destination, form.origin)
+      : null;
+
   // -----------------------------
-  // Submit logic (unchanged)
+  // Clamp invalid return date when depart changes
+  // -----------------------------
+  useEffect(() => {
+    if (tripType !== "roundTrip") return;
+
+    if (
+      form.returnDate &&
+      form.departDate &&
+      new Date(form.returnDate) < new Date(form.departDate)
+    ) {
+      setForm(prev => ({
+        ...prev,
+        returnDate: ""
+      }));
+    }
+  }, [form.departDate, tripType]);
+
+  const returnMin = (() => {
+    if (!tripType === "roundTrip") return undefined;
+    if (!form.departDate) return inboundBounds?.min;
+    if (!inboundBounds?.min) return form.departDate;
+
+    return new Date(form.departDate) > new Date(inboundBounds.min)
+      ? form.departDate
+      : inboundBounds.min;
+  })();
+
+  const returnMax = inboundBounds?.max;
+
+  const returnDisabled =
+    returnMin &&
+    returnMax &&
+    new Date(returnMin) > new Date(returnMax);
+
+  // -----------------------------
+  // Submit logic
   // -----------------------------
   const submitSystemA = () => {
     logEvent("systemA", "submit_search", { ...form, tripType });
@@ -280,7 +320,7 @@ export default function SystemA({
   };
 
   // -----------------------------
-  // Reset search (unchanged)
+  // Reset search
   // -----------------------------
   const resetSearch = () => {
     logEvent("systemA", "reset_search", {
@@ -290,6 +330,7 @@ export default function SystemA({
 
     setForm(emptyForm());
     setAttempted(false);
+    setAttemptResult(null);
     setCurrentHint(null);
     setSuccessfulItineraries(prev => ({
       ...prev,
@@ -298,7 +339,7 @@ export default function SystemA({
   };
 
   // -----------------------------
-  // Completion gate (unchanged)
+  // Completion gate
   // -----------------------------
   const canContinue =
     successfulItineraries.oneWay &&
@@ -306,7 +347,7 @@ export default function SystemA({
     successfulItineraries.multiCity;
 
   // -----------------------------
-  // Render (original UI fully preserved)
+  // Render
   // -----------------------------
   return (
     <>
@@ -354,8 +395,8 @@ export default function SystemA({
             Departure Date:
             <input
               type="date"
-              min={dateBounds?.min}
-              max={dateBounds?.max}
+              min={outboundBounds?.min}
+              max={outboundBounds?.max}
               value={form.departDate}
               onChange={e =>
                 setForm(prev => ({ ...prev, departDate: e.target.value }))
@@ -372,14 +413,21 @@ export default function SystemA({
             Return Date:
             <input
               type="date"
-              min={form.departDate || dateBounds?.min}
-              max={dateBounds?.max}
+              min={returnMin}
+              max={returnMax}
               value={form.returnDate}
+              disabled={returnDisabled}
               onChange={e =>
                 setForm(prev => ({ ...prev, returnDate: e.target.value }))
               }
             />
           </label>
+
+          {returnDisabled && (
+            <div style={{ fontSize: 12, color: "#777" }}>
+              No valid return flights for the selected departure.
+            </div>
+          )}
         </>
       )}
 
@@ -483,7 +531,7 @@ export default function SystemA({
           opacity: canContinue ? 1 : 0.5,
           cursor: canContinue ? "pointer" : "not-allowed"
         }}
-      >
+       >
         Continue to System B
       </button>
     </>
