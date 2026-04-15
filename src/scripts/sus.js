@@ -1,4 +1,4 @@
-// sus.js - Component for administering the System Usability Scale (SUS) questionnaire after each system interaction. Collects participant responses, computes the SUS score, and logs relevant events for analysis.
+// sus.js - System Usability Scale component with added open-ended questions for richer feedback.
 
 import { useState, useEffect, useRef } from "react";
 
@@ -15,6 +15,30 @@ const SUS_QUESTIONS = [
   "I needed to learn a lot of things before I could get going with this system.",
 ];
 
+// Open-ended questions
+const OPEN_ENDED_QUESTIONS = [
+  {
+    id: "frustration",
+    question: "What (if anything) frustrated or slowed you down while using this system?"
+  },
+  {
+    id: "ease",
+    question: "What did you find easy or intuitive?"
+  },
+  {
+    id: "confusion",
+    question: "Was there anything you found confusing or unclear? Please explain."
+  },
+  {
+    id: "strategy",
+    question: "How did you go about completing the tasks? (Briefly describe your approach)"
+  },
+  {
+    id: "improvement",
+    question: "If you could change one thing, what would it be?"
+  }
+];
+
 function computeSUS(responses) {
   const adjusted = responses.map((r, i) => (i % 2 === 0 ? r - 1 : 5 - r));
   return adjusted.reduce((a, b) => a + b, 0) * 2.5;
@@ -24,6 +48,9 @@ export default function SUS({ system, logEvent, updateSession, onComplete }) {
   const [responses, setResponses] = useState(
     Array(SUS_QUESTIONS.length).fill(null)
   );
+
+  // State for open-ended responses
+  const [openResponses, setOpenResponses] = useState({});
 
   const hasLoggedStart = useRef(false);
 
@@ -41,7 +68,24 @@ export default function SUS({ system, logEvent, updateSession, onComplete }) {
     });
   };
 
-  const allAnswered = responses.every((r) => r !== null);
+  // Handler for open-ended responses
+  const updateOpenResponse = (id, value) => {
+    setOpenResponses((prev) => ({
+      ...prev,
+      [id]: value,
+    }));
+
+    logEvent("experiment", "sus_open_response_changed", {
+      system,
+      id,
+      value,
+    });
+  };
+
+  // Require SUS + at least one open response
+  const allAnswered =
+    responses.every((r) => r !== null) &&
+    Object.values(openResponses).some((v) => v && v.trim() !== "");
 
   const submitSUS = () => {
     const score = computeSUS(responses);
@@ -53,6 +97,7 @@ export default function SUS({ system, logEvent, updateSession, onComplete }) {
         sus: {
           responses,
           score,
+          openEnded: openResponses,
           completedAt: new Date().toISOString(),
         },
       },
@@ -62,6 +107,7 @@ export default function SUS({ system, logEvent, updateSession, onComplete }) {
       system,
       score,
       responses,
+      openEnded: openResponses,
     });
 
     onComplete();
@@ -152,6 +198,28 @@ export default function SUS({ system, logEvent, updateSession, onComplete }) {
               </tr>
             </tbody>
           </table>
+        </div>
+      ))}
+
+      {/* Open-ended section */}
+      <h2 style={{ marginTop: "2rem" }}>Additional Feedback</h2>
+
+      <p style={{ fontSize: "0.9rem", color: "#666" }}>
+        Please answer at least one of the following questions.
+      </p>
+
+      {OPEN_ENDED_QUESTIONS.map((q) => (
+        <div key={q.id} style={{ marginBottom: "1.5rem" }}>
+          <p>
+            <strong>{q.question}</strong>
+          </p>
+
+          <textarea
+            rows={3}
+            style={{ width: "100%", padding: "0.5rem" }}
+            value={openResponses[q.id] || ""}
+            onChange={(e) => updateOpenResponse(q.id, e.target.value)}
+          />
         </div>
       ))}
 
