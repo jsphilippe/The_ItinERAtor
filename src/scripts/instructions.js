@@ -46,10 +46,10 @@ export default function Instructions({ onBegin, logEvent }) {
         complete the task and proceed.
       </p>
 
-      {/* Platform clarification — correct place */}
-      <p style={{ fontSize: "0.9rem", color: "#666" }}>
+      <p>
         This study is optimized for desktop or laptop use. On mobile devices,
-        date selection may be less transparent due to native browser behavior.      </p>
+        date selection may be less transparent due to native browser behavior.
+      </p>
 
       <p>When you are ready, click the button below to begin the study.</p>
 
