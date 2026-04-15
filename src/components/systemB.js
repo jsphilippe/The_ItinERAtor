@@ -1,6 +1,5 @@
-// systemB.js - Component for searching flights with a guided form that only allows valid
-// options based on the selected trip type. Tracks successful searches and
-// time to first success.
+// systemB.js
+// Component for searching flights with a guided form that only allows valid options based on the selected trip type. Tracks successful searches and time to first success.
 
 import { useEffect, useMemo, useState } from "react";
 
