@@ -1,6 +1,5 @@
-// systemA.js
-// Component for searching form that adapts to the selected trip type.
-// Provides failure-gated hints and soft temporal guardrails while preserving form-first exploration.
+// systemA.js a flexible form-first UI.
+// Includes soft date guardrails and failure-gated hints.
 
 import { useEffect, useState } from "react";
 import { getHint } from "../hints/hint";
@@ -45,7 +44,6 @@ export default function SystemA({
       f => f.origin === origin && f.destination === destination
     );
 
-    // Non-viable pair: neutral exploration window
     if (matching.length === 0) {
       return {
         min: todayISO(),
@@ -53,7 +51,6 @@ export default function SystemA({
       };
     }
 
-    // Viable pair: ±10 days around known availability
     const dates = matching.map(f => f.departDate).sort();
 
     return {
@@ -84,7 +81,7 @@ export default function SystemA({
   const [currentHint, setCurrentHint] = useState(null);
 
   // -----------------------------
-  // Reset transient state on trip type change
+  // Reset on trip type change
   // -----------------------------
   useEffect(() => {
     setForm(emptyForm());
@@ -94,7 +91,7 @@ export default function SystemA({
   }, [tripType]);
 
   // -----------------------------
-  // Multi‑city helpers
+  // Multi-city helpers
   // -----------------------------
   const updateLeg = (index, field, value) => {
     setForm(prev => {
@@ -129,11 +126,7 @@ export default function SystemA({
         ...prev,
         legs: [
           ...prev.legs,
-          {
-            origin: last.destination || "",
-            destination: "",
-            departDate: ""
-          }
+          { origin: last.destination || "", destination: "", departDate: "" }
         ]
       };
     });
@@ -142,13 +135,12 @@ export default function SystemA({
   const deleteLeg = index => {
     setForm(prev => {
       if (prev.legs.length === 1) return prev;
-      const legs = prev.legs.filter((_, i) => i !== index);
-      return { ...prev, legs };
+      return { ...prev, legs: prev.legs.filter((_, i) => i !== index) };
     });
   };
 
   // -----------------------------
-  // Soft date bounds (one‑way & round‑trip only)
+  // Date bounds
   // -----------------------------
   const dateBounds =
     tripType !== "multiCity"
@@ -199,34 +191,25 @@ export default function SystemA({
             f.destination === form.destination &&
             f.departDate === form.departDate
         );
-
         const inbound = flights.filter(
           f =>
             f.origin === form.destination &&
             f.destination === form.origin &&
             f.departDate === form.returnDate
         );
-
-        found =
-          outbound.length && inbound.length
-            ? [...outbound, ...inbound]
-            : [];
+        found = outbound.length && inbound.length ? [...outbound, ...inbound] : [];
       }
     }
 
     if (tripType === "multiCity") {
-      const legs = form.legs;
-
-      const valid = legs.every((leg, i) => {
+      const valid = form.legs.every((leg, i) => {
         if (!leg.origin || !leg.destination || !leg.departDate) return false;
         if (leg.origin === leg.destination) return false;
-
         if (i > 0) {
-          const prev = legs[i - 1];
+          const prev = form.legs[i - 1];
           if (leg.origin !== prev.destination) return false;
           if (new Date(leg.departDate) < new Date(prev.departDate)) return false;
         }
-
         return flights.some(
           f =>
             f.origin === leg.origin &&
@@ -234,8 +217,7 @@ export default function SystemA({
             f.departDate === leg.departDate
         );
       });
-
-      found = valid ? legs : [];
+      found = valid ? form.legs : [];
     }
 
     setAttemptResult(found);
@@ -248,7 +230,6 @@ export default function SystemA({
       setCurrentHint(null);
     } else {
       const nextFailureCount = failureCounts[tripType] + 1;
-
       setFailureCounts(prev => ({
         ...prev,
         [tripType]: nextFailureCount
@@ -270,23 +251,12 @@ export default function SystemA({
         });
       }
     }
-
-    logEvent(
-      "systemA",
-      found.length === 0 ? "zero_results" : "results_returned",
-      { count: found.length }
-    );
   };
 
   // -----------------------------
   // Reset search
   // -----------------------------
   const resetSearch = () => {
-    logEvent("systemA", "reset_search", {
-      tripType,
-      hadSuccess: !!successfulItineraries[tripType]
-    });
-
     setForm(emptyForm());
     setAttempted(false);
     setAttemptResult(null);
@@ -392,9 +362,7 @@ export default function SystemA({
               <select
                 value={leg.origin}
                 disabled={i > 0}
-                onChange={e =>
-                  updateLeg(i, "origin", e.target.value)
-                }
+                onChange={e => updateLeg(i, "origin", e.target.value)}
               >
                 {i === 0 ? (
                   <>
@@ -410,8 +378,8 @@ export default function SystemA({
 
               <select
                 value={leg.destination}
-                onChange={e =>
-                  updateLeg(i, "destination", e.target.value)
+                onChange={e => updateLeg(i, "destination", e.target.value)}
+              >
                 <option value="">Destination</option>
                 {allDestinations
                   .filter(d => d !== leg.origin)
@@ -424,35 +392,18 @@ export default function SystemA({
                 type="date"
                 min={i > 0 ? form.legs[i - 1].departDate : undefined}
                 value={leg.departDate}
-                onChange={e =>
-                  updateLeg(i, "departDate", e.target.value)
-                }
+                onChange={e => updateLeg(i, "departDate", e.target.value)}
               />
 
               {i > 0 && (
-                <button onClick={() => deleteLeg(i)}>
-                  Remove
-                </button>
+                <button onClick={() => deleteLeg(i)}>Remove</button>
               )}
             </div>
           ))}
 
           <button onClick={addLeg}>+ Add Leg</button>
-        </>
-      )}
-
-      <br />
-
-      <button onClick={submitSystemA}>Search</button>
-      <button onClick={resetSearch} style={{ marginLeft: 8 }}>
-        Reset Search
-      </button>
-
-      {attempted &&
-        Array.isArray(attemptResult) &&
-        attemptResult.length === 0 && (
-          <p>No results found.</p>
-        )}
+tton onClick={submitSystemA}>Search</button>
+      <button onClick={resetSearch} style={{ marginLeft: 8 }}>Reset Search</button>
 
       {currentHint && (
         <div style={{ marginTop: 12, color: "#555" }}>
@@ -460,30 +411,7 @@ export default function SystemA({
         </div>
       )}
 
-      {successfulItineraries[tripType] && (
-        <ul>
-          {successfulItineraries[tripType].map((leg, i) => (
-            <li key={i}>
-              {leg.origin} → {leg.destination} on {leg.departDate}
-            </li>
-          ))}
-        </ul>
-      )}
-
-      {!canContinue && (
-        <p style={{ color: "#666", marginTop: 8 }}>
-          Complete One Way, Round Trip, and Multi City searches to proceed.
-        </p>
-      )}
-
-      <button
-        onClick={onComplete}
-        disabled={!canContinue}
-        style={{
-          opacity: canContinue ? 1 : 0.5,
-          cursor: canContinue ? "pointer" : "not-allowed"
-        }}
-      >
+      <button onClick={onComplete} disabled={!canContinue}>
         Continue to System B
       </button>
     </>
