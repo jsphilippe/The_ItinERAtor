@@ -1,4 +1,7 @@
-// systemB.js - Component for searching flights with a guided form that only allows valid options based on the selected trip type. Tracks successful searches and time to first success.
+// systemB.js
+// Component for searching flights with a guided form that only allows valid
+// options based on the selected trip type. Tracks successful searches and
+// time to first success.
 
 import { useEffect, useMemo, useState } from "react";
 
@@ -7,7 +10,7 @@ export default function SystemB({
   tripType,
   logEvent,
   logFieldChange,
-  onComplete
+  onComplete,
 }) {
   // -----------------------------
   // Helpers
@@ -17,8 +20,37 @@ export default function SystemB({
     destination: "",
     departDate: "",
     returnDate: "",
-    legs: [{ origin: "", destination: "", departDate: "" }]
+    legs: [{ origin: "", destination: "", departDate: "" }],
   });
+
+  // 🔥 NEW: Unified itinerary builder
+  const buildValidItinerary = (flights, legs) => {
+    let previousFlight = null;
+
+    for (let i = 0; i < legs.length; i++) {
+      const leg = legs[i];
+
+      if (!leg.origin || !leg.destination || !leg.departDate) {
+        return null;
+      }
+
+      const match = flights.find(
+        (f) =>
+          f.origin === leg.origin &&
+          f.destination === leg.destination &&
+          f.departDate === leg.departDate &&
+          (!previousFlight ||
+            (previousFlight.destination === f.origin &&
+              new Date(f.departDate) >= new Date(previousFlight.departDate)))
+      );
+
+      if (!match) return null;
+
+      previousFlight = match;
+    }
+
+    return builtFlights;
+  };
 
   // -----------------------------
   // State
@@ -28,7 +60,7 @@ export default function SystemB({
   const [successfulItineraries, setSuccessfulItineraries] = useState({
     oneWay: null,
     roundTrip: null,
-    multiCity: null
+    multiCity: null,
   });
 
   const [firstSuccessTime, setFirstSuccessTime] = useState(null);
@@ -48,19 +80,17 @@ export default function SystemB({
       return [
         ...new Set(
           flights
-            .filter(f =>
+            .filter((f) =>
               flights.some(
-                r =>
-                  r.origin === f.destination &&
-                  r.destination === f.origin
+                (r) => r.origin === f.destination && r.destination === f.origin
               )
             )
-            .map(f => f.origin)
-        )
+            .map((f) => f.origin)
+        ),
       ];
     }
 
-    return [...new Set(flights.map(f => f.origin))];
+    return [...new Set(flights.map((f) => f.origin))];
   }, [flights, tripType]);
 
   // -----------------------------
@@ -73,9 +103,9 @@ export default function SystemB({
       return [
         ...new Set(
           flights
-            .filter(f => f.origin === form.origin)
-            .map(f => f.destination)
-        )
+            .filter((f) => f.origin === form.origin)
+            .map((f) => f.destination)
+        ),
       ];
     }
 
@@ -83,30 +113,26 @@ export default function SystemB({
       return [
         ...new Set(
           flights
-            .filter(f => f.origin === form.origin)
-            .map(f => f.destination)
-            .filter(dest => {
+            .filter((f) => f.origin === form.origin)
+            .map((f) => f.destination)
+            .filter((dest) => {
               const outboundDates = flights
                 .filter(
-                  f =>
-                    f.origin === form.origin &&
-                    f.destination === dest
+                  (f) => f.origin === form.origin && f.destination === dest
                 )
-                .map(f => f.departDate);
+                .map((f) => f.departDate);
 
               const inboundDates = flights
                 .filter(
-                  f =>
-                    f.origin === dest &&
-                    f.destination === form.origin
+                  (f) => f.origin === dest && f.destination === form.origin
                 )
-                .map(f => f.departDate);
+                .map((f) => f.departDate);
 
-              return outboundDates.some(d =>
-                inboundDates.some(r => new Date(r) >= new Date(d))
+              return outboundDates.some((d) =>
+                inboundDates.some((r) => new Date(r) >= new Date(d))
               );
             })
-        )
+        ),
       ];
     }
 
@@ -114,12 +140,10 @@ export default function SystemB({
       return [
         ...new Set(
           flights
-            .filter(f => f.origin === form.origin)
-            .map(f => f.destination)
-            .filter(dest =>
-              flights.some(next => next.origin === dest)
-            )
-        )
+            .filter((f) => f.origin === form.origin)
+            .map((f) => f.destination)
+            .filter((dest) => flights.some((next) => next.origin === dest))
+        ),
       ];
     }
 
@@ -127,7 +151,7 @@ export default function SystemB({
   }, [flights, form.origin, tripType]);
 
   // -----------------------------
-  // Viable departure dates (one way and round trip)
+  // Viable departure dates
   // -----------------------------
   const viableDepartDates = useMemo(() => {
     if (!form.origin || !form.destination) return [];
@@ -135,12 +159,11 @@ export default function SystemB({
       ...new Set(
         flights
           .filter(
-            f =>
-              f.origin === form.origin &&
-              f.destination === form.destination
+            (f) =>
+              f.origin === form.origin && f.destination === form.destination
           )
-          .map(f => f.departDate)
-      )
+          .map((f) => f.departDate)
+      ),
     ];
   }, [flights, form.origin, form.destination]);
 
@@ -167,13 +190,13 @@ export default function SystemB({
       ...new Set(
         flights
           .filter(
-            f =>
+            (f) =>
               f.origin === form.destination &&
               f.destination === form.origin &&
               new Date(f.departDate) >= new Date(form.departDate)
           )
-          .map(f => f.departDate)
-      )
+          .map((f) => f.departDate)
+      ),
     ];
   }, [flights, form, tripType]);
 
@@ -187,95 +210,77 @@ export default function SystemB({
   // Multi city helpers
   // -----------------------------
   const updateLeg = (index, field, value) => {
-    setForm(prev => ({
+    setForm((prev) => ({
       ...prev,
       legs: prev.legs.map((leg, i) =>
         i === index ? { ...leg, [field]: value } : leg
-      )
+      ),
     }));
   };
 
   const addLeg = () => {
-    setForm(prev => {
+    setForm((prev) => {
       const last = prev.legs[prev.legs.length - 1];
       return {
         ...prev,
         legs: [
           ...prev.legs,
-          { origin: last.destination || "", destination: "", departDate: "" }
-        ]
+          { origin: last.destination || "", destination: "", departDate: "" },
+        ],
       };
     });
   };
 
-  const deleteLeg = index => {
-    setForm(prev => ({
+  const deleteLeg = (index) => {
+    setForm((prev) => ({
       ...prev,
       legs:
         prev.legs.length > 1
           ? prev.legs.filter((_, i) => i !== index)
-          : prev.legs
+          : prev.legs,
     }));
   };
 
   // -----------------------------
-  // Submit logic
+  // Submit logic (UNIFIED)
   // -----------------------------
   const submitSystemB = () => {
     logEvent("systemB", "submit_search", { ...form, tripType });
 
-    let found = [];
+    let legs = [];
 
     if (tripType === "oneWay") {
-      found = flights.filter(
-        f =>
-          f.origin === form.origin &&
-          f.destination === form.destination &&
-          f.departDate === form.departDate
-      );
+      legs = [
+        {
+          origin: form.origin,
+          destination: form.destination,
+          departDate: form.departDate,
+        },
+      ];
     }
 
     if (tripType === "roundTrip") {
-      const outbound = flights.filter(
-        f =>
-          f.origin === form.origin &&
-          f.destination === form.destination &&
-          f.departDate === form.departDate
-      );
-
-      const inbound = flights.filter(
-        f =>
-          f.origin === form.destination &&
-          f.destination === form.origin &&
-          f.departDate === form.returnDate
-      );
-
-      found =
-        outbound.length && inbound.length
-          ? [...outbound, ...inbound]
-          : [];
+      legs = [
+        {
+          origin: form.origin,
+          destination: form.destination,
+          departDate: form.departDate,
+        },
+        {
+          origin: form.destination,
+          destination: form.origin,
+          departDate: form.returnDate,
+        },
+      ];
     }
 
     if (tripType === "multiCity") {
-      const valid = form.legs.every((leg, i) => {
-        if (!leg.origin || !leg.destination || !leg.departDate) return false;
-
-        if (i > 0) {
-          const prev = form.legs[i - 1];
-          if (leg.origin !== prev.destination) return false;
-          if (new Date(leg.departDate) < new Date(prev.departDate)) return false;
-        }
-
-        return flights.some(
-          f =>
-            f.origin === leg.origin &&
-            f.destination === leg.destination &&
-            f.departDate === leg.departDate
-        );
-      });
-
-      found = valid ? form.legs : [];
+      legs = form.legs;
     }
+
+    const itinerary = buildValidItinerary(flights, legs);
+
+    const found = itinerary ? itinerary : [];
 
     if (found.length > 0) {
       if (!firstSuccessTime) {
@@ -284,9 +289,9 @@ export default function SystemB({
         logEvent("systemB", "first_success", { tripType, time });
       }
 
-      setSuccessfulItineraries(prev => ({
+      setSuccessfulItineraries((prev) => ({
         ...prev,
-        [tripType]: found
+        [tripType]: found,
       }));
     }
   };
@@ -297,13 +302,13 @@ export default function SystemB({
   const resetSearch = () => {
     logEvent("systemB", "reset_search", {
       tripType,
-      hadSuccess: !!successfulItineraries[tripType]
+      hadSuccess: !!successfulItineraries[tripType],
     });
 
     setForm(emptyForm());
-    setSuccessfulItineraries(prev => ({
+    setSuccessfulItineraries((prev) => ({
       ...prev,
-      [tripType]: null
+      [tripType]: null,
     }));
   };
 
@@ -333,12 +338,12 @@ export default function SystemB({
                     ...new Set(
                       flights
                         .filter(
-                          f =>
+                          (f) =>
                             f.origin === leg.origin &&
                             f.destination === leg.destination
                         )
-                        .map(f => f.departDate)
-                    )
+                        .map((f) => f.departDate)
+                    ),
                   ]
                 : [];
 
@@ -347,11 +352,10 @@ export default function SystemB({
                 ? { min: "", max: "" }
                 : {
                     min: legDates.sort()[0],
-                    max: legDates.sort()[legDates.length - 1]
+                    max: legDates.sort()[legDates.length - 1],
                   };
 
-            const previousDate =
-              i > 0 ? form.legs[i - 1].departDate : null;
+            const previousDate = i > 0 ? form.legs[i - 1].departDate : null;
 
             const effectiveMin =
               previousDate && bounds.min
@@ -365,35 +369,35 @@ export default function SystemB({
                 <select
                   value={leg.origin}
                   disabled={i > 0}
-                  onChange={e =>
-                    updateLeg(i, "origin", e.target.value)
-                  }
+                  onChange={(e) => updateLeg(i, "origin", e.target.value)}
                 >
                   <option value="">Origin</option>
-                  {viableOrigins.map(o => (
-                    <option key={o} value={o}>{o}</option>
+                  {viableOrigins.map((o) => (
+                    <option key={o} value={o}>
+                      {o}
+                    </option>
                   ))}
                 </select>
 
                 <select
                   value={leg.destination}
-                  onChange={e =>
-                    updateLeg(i, "destination", e.target.value)
-                  }
+                  onChange={(e) => updateLeg(i, "destination", e.target.value)}
                 >
                   <option value="">Destination</option>
                   {[
                     ...new Set(
                       flights
-                        .filter(f => f.origin === leg.origin)
-                        .map(f => f.destination)
-                    )
+                        .filter((f) => f.origin === leg.origin)
+                        .map((f) => f.destination)
+                    ),
                   ]
-                    .filter(dest =>
-                      flights.some(next => next.origin === dest)
+                    .filter((dest) =>
+                      flights.some((next) => next.origin === dest)
                     )
-                    .map(d => (
-                      <option key={d} value={d}>{d}</option>
+                    .map((d) => (
+                      <option key={d} value={d}>
+                        {d}
+                      </option>
                     ))}
                 </select>
 
@@ -402,7 +406,7 @@ export default function SystemB({
                   min={effectiveMin}
                   max={bounds.max}
                   value={leg.departDate}
-                  onChange={e => {
+                  onChange={(e) => {
                     const value = e.target.value;
                     if (!legDates.includes(value)) return;
                     if (previousDate && value < previousDate) return;
@@ -410,11 +414,7 @@ export default function SystemB({
                   }}
                 />
 
-                {i > 0 && (
-                  <button onClick={() => deleteLeg(i)}>
-                    Remove
-                  </button>
-                )}
+                {i > 0 && <button onClick={() => deleteLeg(i)}>Remove</button>}
               </div>
             );
           })}
@@ -429,20 +429,27 @@ export default function SystemB({
             Origin:
             <select
               value={form.origin}
-              onChange={e => {
-                logFieldChange("systemB", "origin", e.target.value, form.origin);
+              onChange={(e) => {
+                logFieldChange(
+                  "systemB",
+                  "origin",
+                  e.target.value,
+                  form.origin
+                );
                 setForm({
                   ...form,
                   origin: e.target.value,
                   destination: "",
                   departDate: "",
-                  returnDate: ""
+                  returnDate: "",
                 });
               }}
             >
               <option value="">Select origin</option>
-              {viableOrigins.map(o => (
-                <option key={o} value={o}>{o}</option>
+              {viableOrigins.map((o) => (
+                <option key={o} value={o}>
+                  {o}
+                </option>
               ))}
             </select>
           </label>
@@ -454,19 +461,26 @@ export default function SystemB({
             <select
               value={form.destination}
               disabled={!form.origin}
-              onChange={e => {
-                logFieldChange("systemB", "destination", e.target.value, form.destination);
+              onChange={(e) => {
+                logFieldChange(
+                  "systemB",
+                  "destination",
+                  e.target.value,
+                  form.destination
+                );
                 setForm({
                   ...form,
                   destination: e.target.value,
                   departDate: "",
-                  returnDate: ""
+                  returnDate: "",
                 });
               }}
             >
               <option value="">Select destination</option>
-              {viableDestinations.map(d => (
-                <option key={d} value={d}>{d}</option>
+              {viableDestinations.map((d) => (
+                <option key={d} value={d}>
+                  {d}
+                </option>
               ))}
             </select>
           </label>
@@ -480,14 +494,14 @@ export default function SystemB({
               min={departBounds.min}
               max={departBounds.max}
               value={form.departDate}
-              onChange={e => {
+              onChange={(e) => {
                 const value = e.target.value;
                 if (!viableDepartDates.includes(value)) return;
                 logFieldChange("systemB", "departDate", value, form.departDate);
-                setForm(prev => ({
+                setForm((prev) => ({
                   ...prev,
                   departDate: value,
-                  returnDate: ""
+                  returnDate: "",
                 }));
               }}
             />
@@ -503,11 +517,16 @@ export default function SystemB({
                   min={returnBounds.min}
                   max={returnBounds.max}
                   value={form.returnDate}
-                  onChange={e => {
+                  onChange={(e) => {
                     const value = e.target.value;
                     if (!viableReturnDates.includes(value)) return;
-                    logFieldChange("systemB", "returnDate", value, form.returnDate);
-                    setForm(prev => ({ ...prev, returnDate: value }));
+                    logFieldChange(
+                      "systemB",
+                      "returnDate",
+                      value,
+                      form.returnDate
+                    );
+                    setForm((prev) => ({ ...prev, returnDate: value }));
                   }}
                 />
               </label>
