@@ -1,6 +1,5 @@
 // hint.js
-// Logic for generating context-sensitive hints based on user interactions
-// and derived flight data insights.
+// Logic for generating context-sensitive hints based on user interactions and derived flight data insights.
 //
 // Design principles:
 // - Hints are failure-gated (never shown too early)
