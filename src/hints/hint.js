@@ -1,4 +1,12 @@
-// hint.js - Logic for generating context-sensitive hints based on user interactions and flight data insights. Hints are designed to guide users through common pitfalls without giving away solutions directly.
+// hint.js
+// Logic for generating context-sensitive hints based on user interactions
+// and derived flight data insights.
+//
+// Design principles:
+// - Hints are failure-gated (never shown too early)
+// - Hints are probabilistic and non-directive
+// - Hints acknowledge constraints without revealing solutions
+// - Hints prevent infinite frustration loops without guiding success
 
 export function getHint({
   tripType,
@@ -6,9 +14,9 @@ export function getHint({
   lastAttempt,
   flightFacts
 }) {
-  // -----------------------------
+  // --------------------------------------------------
   // Guard: do not hint too early
-  // -----------------------------
+  // --------------------------------------------------
   if (failureCount < 5) return null;
 
   const {
@@ -17,9 +25,9 @@ export function getHint({
     getAvailableDates = () => []
   } = flightFacts || {};
 
-  // -----------------------------
-  // 1. Form incomplete
-  // -----------------------------
+  // --------------------------------------------------
+  // 1. Procedural completeness (highest priority)
+  // --------------------------------------------------
   if (tripType !== "multiCity") {
     if (
       !lastAttempt?.origin ||
@@ -30,7 +38,7 @@ export function getHint({
       return {
         type: "form_incomplete",
         message:
-          "Try completing all itinerary details before exploring route constraints."
+          "Some itinerary details are still missing. Try completing all fields before evaluating route availability."
       };
     }
   } else {
@@ -43,18 +51,42 @@ export function getHint({
       return {
         type: "form_incomplete",
         message:
-          "Each leg needs an origin, destination, and departure date."
+          "Each leg of a multi-city trip requires an origin, destination, and departure date."
       };
     }
   }
 
-  // -----------------------------
-  // 2. Date availability mismatch
-  // -----------------------------
-  if (tripType === "oneWay") {
-    const { origin, destination, departDate } = lastAttempt;
+  // --------------------------------------------------
+  // 2. Explicit non-viable route (soft disclosure)
+  // --------------------------------------------------
+  if (tripType !== "multiCity") {
+    const { origin, destination } = lastAttempt || {};
 
-    if (origin && destination && departDate && hasRoute(origin, destination)) {
+    if (
+      origin &&
+      destination &&
+      !hasRoute(origin, destination)
+    ) {
+      return {
+        type: "route_may_not_exist",
+        message:
+          "This origin and destination pairing may not be viable in this system."
+      };
+    }
+  }
+
+  // --------------------------------------------------
+  // 3. Temporal availability mismatch (route exists)
+  // --------------------------------------------------
+  if (tripType === "oneWay") {
+    const { origin, destination, departDate } = lastAttempt || {};
+
+    if (
+      origin &&
+      destination &&
+      departDate &&
+      hasRoute(origin, destination)
+    ) {
       const availableDates = getAvailableDates(origin, destination);
 
       if (
@@ -70,24 +102,29 @@ export function getHint({
     }
   }
 
-  // -----------------------------
-  // 3. Round-trip structural constraint
-  // -----------------------------
+  // --------------------------------------------------
+  // 4. Round-trip structural limitation
+  // --------------------------------------------------
   if (tripType === "roundTrip") {
-    const { origin, destination } = lastAttempt;
+    const { origin, destination } = lastAttempt || {};
 
-    if (origin && destination && !hasRoute(destination, origin)) {
+    if (
+      origin &&
+      destination &&
+      hasRoute(origin, destination) &&
+      !hasRoute(destination, origin)
+    ) {
       return {
         type: "no_return",
         message:
-          "This destination does not have flights back to the origin. Not all routes support round-trip travel."
+          "This destination may not support a return flight to the origin. Not all routes allow round-trip travel."
       };
     }
   }
 
-  // -----------------------------
-  // 4. Multi-city terminal airport
-  // -----------------------------
+  // --------------------------------------------------
+  // 5. Multi-city terminal airport constraint
+  // --------------------------------------------------
   if (tripType === "multiCity") {
     const legs = lastAttempt?.legs || [];
     const lastLeg = legs[legs.length - 1];
@@ -99,14 +136,14 @@ export function getHint({
       return {
         type: "terminal_airport",
         message:
-          "This airport has no onward flights. Multi-city trips must end here."
+          "This airport has no onward flights. Multi-city trips typically must end here."
       };
     }
   }
 
-  // -----------------------------
-  // 5. Fallback
-  // -----------------------------
+  // --------------------------------------------------
+  // 6. Fallback: abstract system constraint
+  // --------------------------------------------------
   return {
     type: "general_constraint",
     message:
