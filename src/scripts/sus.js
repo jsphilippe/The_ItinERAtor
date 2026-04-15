@@ -1,4 +1,5 @@
-// sus.js - System Usability Scale component with added open-ended questions for richer feedback.
+// sus.js
+// System Usability Scale component with added open-ended questions for richer feedback.
 
 import { useState, useEffect, useRef } from "react";
 
