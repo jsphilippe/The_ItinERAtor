@@ -14,14 +14,6 @@ function generateDateRange(minDate, maxDate) {
 }
 
 // -----------------------------
-// Airports (expanded breadth)
-// -----------------------------
-const airports = [
-  "JFK", "LAX", "SFO", "SEA", "DEN",
-  "ORD", "ATL", "DFW", "BOS", "MIA"
-];
-
-// -----------------------------
 // Structured but dense route graph
 // (intentional ambiguity + overlap)
 // -----------------------------

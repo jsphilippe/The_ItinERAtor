@@ -1,3 +1,5 @@
+// sus.js - Component for administering the System Usability Scale (SUS) questionnaire after each system interaction. Collects participant responses, computes the SUS score, and logs relevant events for analysis.
+
 import { useState, useEffect, useRef } from "react";
 
 const SUS_QUESTIONS = [

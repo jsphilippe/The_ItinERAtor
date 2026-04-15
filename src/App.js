@@ -1,4 +1,4 @@
-// App.js
+// App.js - Main application component for the Itinerator experiment. Manages overall flow, state, and session logging.
 
 import { useEffect, useState } from "react";
 
