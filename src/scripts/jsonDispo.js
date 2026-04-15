@@ -1,4 +1,6 @@
-// jsonDispo.js - Component for final session data download and submission instructions after experiment completion. Provides a button to download the session data as a JSON file, which participants can then submit to the research team.
+// jsonDispo.js
+// Component for final session data download and submission instructions after experiment completion.
+// Provides a button to download the session data as a JSON file, which participants can then submit to the research team.
 
 export default function JsonDispo({ session }) {
   const downloadSessionFile = () => {
