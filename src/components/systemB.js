@@ -66,7 +66,7 @@ export default function SystemB({
     multiCity: null,
   });
 
-  Time, setFirstSuccessTime] = useState(null);
+  const [firstSuccessTime, setFirstSuccessTime] = useState(null);
 
   // -----------------------------
   // Reset on trip type change
