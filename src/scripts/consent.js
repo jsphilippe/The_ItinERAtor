@@ -54,11 +54,13 @@ export default function Consent({ onAccept, onDecline, logEvent }) {
       </p>
 
       <p>
-        Jacques Philippe: jphilippe@wpi.edu
-        <br />
-        Kenneth Doan: kmdoan@wpi.edu
-        <br />
-        Jonathan Golden: jegolden@wpi.edu
+        <strong>
+          Jacques Philippe: jphilippe@wpi.edu
+          <br />
+          Kenneth Doan: kmdoan@wpi.edu
+          <br />
+          Jonathan Golden: jegolden@wpi.edu
+        </strong>
       </p>
 
       <p>
