@@ -470,14 +470,36 @@ export default function SystemA({
                   ))}
               </select>
 
-              <input
-                type="date"
-                min={i > 0 ? form.legs[i - 1].departDate : undefined}
-                value={leg.departDate}
-                onChange={e =>
-                  updateLeg(i, "departDate", e.target.value)
-                }
-              />
+              {(() => {
+                const bounds = getDateBoundsForPair(
+                  leg.origin,
+                  leg.destination
+                );
+              
+                const prevDate =
+                  i > 0 ? form.legs[i - 1].departDate : null;
+              
+                const minDate =
+                  bounds?.min && prevDate
+                    ? new Date(prevDate) > new Date(bounds.min)
+                      ? prevDate
+                      : bounds.min
+                    : bounds?.min || prevDate || undefined;
+              
+                const maxDate = bounds?.max;
+              
+                return (
+                  <input
+                    type="date"
+                    min={minDate}
+                    max={maxDate}
+                    value={leg.departDate}
+                    onChange={e =>
+                      updateLeg(i, "departDate", e.target.value)
+                    }
+                  />
+                );
+              })()}
 
               {i > 0 && (
                 <button onClick={() => deleteLeg(i)}>Remove</button>
