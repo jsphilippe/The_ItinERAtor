@@ -1,4 +1,5 @@
-// instructions.js - Component for displaying the study instructions and handling the start of the study
+// instructions.js
+// Component for displaying the study instructions and handling the start of the study.
 
 export default function Instructions({ onBegin, logEvent }) {
   return (
