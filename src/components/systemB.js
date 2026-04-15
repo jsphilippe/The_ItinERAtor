@@ -36,16 +36,24 @@ export default function SystemB({
         return null;
       }
 
-      const prev = previousFlight;
-      const match = flights.find(
-        (f) =>
+      const prevFlight = previousFlight;
+      const prevDestination = prevFlight ? prevFlight.destination : null;
+      const prevDate = prevFlight ? new Date(prevFlight.departDate) : null;
+
+      const match = flights.find((f) => {
+        const isBaseMatch =
           f.origin === leg.origin &&
           f.destination === leg.destination &&
-          f.departDate === leg.departDate &&
-          (!prev ||
-            (prev.destination === f.origin &&
-              new Date(f.departDate) >= new Date(previousFlight.departDate)))
-      );
+          f.departDate === leg.departDate;
+
+        if (!prevFlight) return isBaseMatch;
+
+        return (
+          isBaseMatch &&
+          prevDestination === f.origin &&
+          new Date(f.departDate) >= prevDate
+        );
+      });
 
       if (!match) return null;
 
