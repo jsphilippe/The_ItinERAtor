@@ -1,4 +1,5 @@
-// tripTypeSelector.js - Component for selecting trip type (one‑way, round‑trip, multi‑city) with event logging.
+// tripTypeSelector.js
+// Component for selecting trip type (one‑way, round‑trip, multi‑city) with event logging.
 
 import { useEffect, useRef } from "react";
 
