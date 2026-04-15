@@ -25,7 +25,7 @@ export default function Consent({ onAccept, onDecline, logEvent }) {
       </p>
 
       <p>
-        What to expect: You will complete three flight search tasks and then
+        <bold>What to expect:</bold> You will complete three flight search tasks and then
         answer a brief 10‑question usability survey known as the System
         Usability Scale (SUS). Some tasks may feel confusing, inefficient, or
         difficult. This is intentional and expected. Please interact with the
@@ -34,7 +34,7 @@ export default function Consent({ onAccept, onDecline, logEvent }) {
       </p>
 
       <p>
-        Data and privacy: Your interactions with the interface, including
+        <bold>Data and privacy:</bold> Your interactions with the interface, including
         clicks, selections, timing data, and survey responses, will be recorded
         anonymously in JSON log files. No names, contact information, or other
         personally identifiable data are collected. All data will be used solely
