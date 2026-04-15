@@ -1,4 +1,6 @@
-// useSessionLogger.js - Custom React hook for managing session state and logging events across different systems (e.g., experiment, systemA, systemB). Provides a structured API for logging field changes, system lifecycle events, and direct session updates.
+// useSessionLogger.js
+// Custom React hook for managing session state and logging events across different systems (e.g., experiment, systemA, systemB).
+// Provides a structured API for logging field changes, system lifecycle events, and direct session updates.
 
 import { useState, useCallback } from "react";
 
