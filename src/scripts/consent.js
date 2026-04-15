@@ -11,7 +11,7 @@ export default function Consent({ onAccept, onDecline, logEvent }) {
 
       <p>
         You are invited to participate in a usability research study conducted
-        as part of the CSC 4xx: Human‑Computer Interaction course at Worcester
+        as part of the CS 546: Human‑Computer Interaction course at Worcester
         Polytechnic Institute. This study evaluates experimental flight search
         interface designs developed for an academic project called The
         ItinERAter.
