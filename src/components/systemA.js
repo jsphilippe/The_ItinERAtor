@@ -1,4 +1,7 @@
-// systemA.js - Component for searching flights with a flexible form that adapts to the selected trip type. Provides hints after failed attempts and tracks successful searches.
+// systemA.js
+// Component for searching flights with a flexible form that adapts to the selected trip type.
+// Provides hints after failed attempts and tracks successful searches.
+// Soft date guardrails constrain date pickers without enforcing outcomes.
 
 import { useEffect, useState } from "react";
 import { getHint } from "../hints/hint";
@@ -25,6 +28,38 @@ export default function SystemA({
   });
 
   const sameAirport = (a, b) => a && b && a === b;
+  
+  const toISO = d => d.toISOString().split("T")[0];
+
+  const addDays = (dateStr, days) => {
+    const d = new Date(dateStr);
+    d.setDate(d.getDate() + days);
+    return toISO(d);
+  };
+
+  const todayISO = () => toISO(new Date());
+
+  const getDateBoundsForPair = (origin, destination) => {
+    if (!origin || !destination) return null;
+
+    const matching = flights.filter(
+      f => f.origin === origin && f.destination === destination
+    );
+
+    if (matching.length === 0) {
+      return {
+        min: todayISO(),
+        max: addDays(todayISO(), 30)
+      };
+    }
+
+    const dates = matching.map(f => f.departDate).sort();
+
+    return {
+      min: addDays(dates[0], -10),
+      max: addDays(dates[dates.length - 1], 10)
+    };
+  };
 
   // -----------------------------
   // State
@@ -106,13 +141,23 @@ export default function SystemA({
   const deleteLeg = index => {
     setForm(prev => {
       if (prev.legs.length === 1) return prev;
-      const legs = prev.legs.filter((_, i) => i !== index);
-      return { ...prev, legs };
+      return {
+        ...prev,
+        legs: prev.legs.filter((_, i) => i !== index)
+      };
     });
   };
 
   // -----------------------------
-  // Submit logic
+  // Soft date bounds (additive)
+  // -----------------------------
+  const dateBounds =
+    tripType !== "multiCity"
+      ? getDateBoundsForPair(form.origin, form.destination)
+      : null;
+
+  // -----------------------------
+  // Submit logic (unchanged)
   // -----------------------------
   const submitSystemA = () => {
     logEvent("systemA", "submit_search", { ...form, tripType });
@@ -235,7 +280,7 @@ export default function SystemA({
   };
 
   // -----------------------------
-  // Reset search
+  // Reset search (unchanged)
   // -----------------------------
   const resetSearch = () => {
     logEvent("systemA", "reset_search", {
@@ -245,7 +290,6 @@ export default function SystemA({
 
     setForm(emptyForm());
     setAttempted(false);
-    setAttemptResult(null);
     setCurrentHint(null);
     setSuccessfulItineraries(prev => ({
       ...prev,
@@ -254,7 +298,7 @@ export default function SystemA({
   };
 
   // -----------------------------
-  // Completion gate
+  // Completion gate (unchanged)
   // -----------------------------
   const canContinue =
     successfulItineraries.oneWay &&
@@ -262,7 +306,7 @@ export default function SystemA({
     successfulItineraries.multiCity;
 
   // -----------------------------
-  // Render
+  // Render (original UI fully preserved)
   // -----------------------------
   return (
     <>
@@ -310,6 +354,8 @@ export default function SystemA({
             Departure Date:
             <input
               type="date"
+              min={dateBounds?.min}
+              max={dateBounds?.max}
               value={form.departDate}
               onChange={e =>
                 setForm(prev => ({ ...prev, departDate: e.target.value }))
@@ -326,7 +372,8 @@ export default function SystemA({
             Return Date:
             <input
               type="date"
-              min={form.departDate}
+              min={form.departDate || dateBounds?.min}
+              max={dateBounds?.max}
               value={form.returnDate}
               onChange={e =>
                 setForm(prev => ({ ...prev, returnDate: e.target.value }))
@@ -385,9 +432,7 @@ export default function SystemA({
               />
 
               {i > 0 && (
-                <button onClick={() => deleteLeg(i)}>
-                  Remove
-                </button>
+                <button onClick={() => deleteLeg(i)}>Remove</button>
               )}
             </div>
           ))}
