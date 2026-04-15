@@ -412,7 +412,7 @@ export default function SystemA({
                 value={leg.destination}
                 onChange={e =>
                   updateLeg(i, "destination", e.target.value)
-               lue="">Destination</option>
+                <option value="">Destination</option>
                 {allDestinations
                   .filter(d => d !== leg.origin)
                   .map(d => (
