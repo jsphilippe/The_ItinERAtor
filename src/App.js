@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 import Consent from "./scripts/consent";
 import Instructions from "./scripts/instructions";
+import SUS from "./scripts/sus";
 
 import SystemA from "./components/systemA";
 import SystemB from "./components/systemB";
@@ -19,12 +20,11 @@ import { analyzeFlights } from "./utils/hintUtils";
 export default function App() {
   // -----------------------------
   // Phase control
-  // consent → instructions → systemA → systemB → complete
   // -----------------------------
   const [phase, setPhase] = useState("consent");
 
   // -----------------------------
-  // Trip type (experimental condition)
+  // Trip type
   // -----------------------------
   const [tripType, setTripType] = useState("oneWay");
 
@@ -45,18 +45,20 @@ export default function App() {
       startTime: null,
       endTime: null,
       completed: false,
-      events: []
+      events: [],
+      sus: null
     },
     systemB: {
       startTime: null,
       endTime: null,
       completed: false,
-      events: []
+      events: [],
+      sus: null
     }
   };
 
   // -----------------------------
-  // Session logger hook
+  // Session logger
   // -----------------------------
   const {
     session,
@@ -71,19 +73,6 @@ export default function App() {
   // Validation hook
   // -----------------------------
   const { validateTrip } = useTripValidation(flights);
-
-  // -----------------------------
-  // Sync experiment metadata with tripType
-  // -----------------------------
-  useEffect(() => {
-    updateSession(prev => ({
-      ...prev,
-      meta: {
-        ...prev.meta,
-        condition: tripType
-      }
-    }));
-  }, [tripType, updateSession]);
 
   // -----------------------------
   // Navigation lock
@@ -122,7 +111,7 @@ export default function App() {
 
   return (
     <div style={{ padding: "2rem", fontFamily: "sans-serif" }}>
-      {/* ---------------- CONSENT ---------------- */}
+      {/* CONSENT */}
       {phase === "consent" && (
         <Consent
           logEvent={logEvent}
@@ -131,7 +120,7 @@ export default function App() {
         />
       )}
 
-      {/* ---------------- INSTRUCTIONS ---------------- */}
+      {/* INSTRUCTIONS */}
       {phase === "instructions" && (
         <Instructions
           logEvent={logEvent}
@@ -139,7 +128,7 @@ export default function App() {
         />
       )}
 
-      {/* ---------------- SYSTEM A ---------------- */}
+      {/* SYSTEM A */}
       {phase === "systemA" && (
         <>
           <TripTypeSelector
@@ -161,14 +150,14 @@ export default function App() {
             validateTrip={validateTrip}
             onComplete={() => {
               completeSystem("systemA");
-              setTripType("oneWay"); // Reset trip type for system B
+              setTripType("oneWay");
               setPhase("systemB");
             }}
           />
         </>
       )}
 
-      {/* ---------------- SYSTEM B ---------------- */}
+      {/* SYSTEM B */}
       {phase === "systemB" && (
         <>
           <TripTypeSelector
@@ -181,22 +170,39 @@ export default function App() {
 
           <SystemB
             flights={flights}
-            allOrigins={allOrigins}
-            allDestinations={allDestinations}
             tripType={tripType}
-            flightFacts={flightFacts}
             logEvent={logEvent}
             logFieldChange={logFieldChange}
             validateTrip={validateTrip}
             onComplete={() => {
               completeSystem("systemB");
-              setPhase("complete");
+              setPhase("susA");
             }}
           />
         </>
       )}
 
-      {/* ---------------- COMPLETE ---------------- */}
+      {/* SUS FOR SYSTEM A */}
+      {phase === "susA" && (
+        <SUS
+          system="systemA"
+          logEvent={logEvent}
+          updateSession={updateSession}
+          onComplete={() => setPhase("susB")}
+        />
+      )}
+
+      {/* SUS FOR SYSTEM B */}
+      {phase === "susB" && (
+        <SUS
+          system="systemB"
+          logEvent={logEvent}
+          updateSession={updateSession}
+          onComplete={() => setPhase("complete")}
+        />
+      )}
+
+      {/* COMPLETE */}
       {phase === "complete" && (
         <>
           <h1>Experiment Complete</h1>
