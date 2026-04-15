@@ -1,7 +1,4 @@
-// systemA.js
-// Component for searching flights with a flexible, form-first UI.
-// Soft guardrails prevent impossible date selections while preserving exploration.
-// Hints remain failure-gated and non-directive.
+// systemA.js - Component for searching flights with a flexible form that adapts to the selected trip type. Provides hints after failed attempts and tracks successful searches.
 
 import { useEffect, useState } from "react";
 import { getHint } from "../hints/hint";
@@ -28,40 +25,6 @@ export default function SystemA({
   });
 
   const sameAirport = (a, b) => a && b && a === b;
-
-  const toISO = d => d.toISOString().split("T")[0];
-
-  const addDays = (dateStr, days) => {
-    const d = new Date(dateStr);
-    d.setDate(d.getDate() + days);
-    return toISO(d);
-  };
-
-  const todayISO = () => toISO(new Date());
-
-  const getDateBoundsForPair = (origin, destination) => {
-    if (!origin || !destination) return null;
-
-    const matching = flights.filter(
-      f => f.origin === origin && f.destination === destination
-    );
-
-    // Non-viable pair: neutral exploration window
-    if (matching.length === 0) {
-      return {
-        min: todayISO(),
-        max: addDays(todayISO(), 30)
-      };
-    }
-
-    // Viable pair: ±10 days around known availability
-    const dates = matching.map(f => f.departDate).sort();
-
-    return {
-      min: addDays(dates[0], -10),
-      max: addDays(dates[dates.length - 1], 10)
-    };
-  };
 
   // -----------------------------
   // State
@@ -95,7 +58,7 @@ export default function SystemA({
   }, [tripType]);
 
   // -----------------------------
-  // Multi-city helpers
+  // Multi city helpers
   // -----------------------------
   const updateLeg = (index, field, value) => {
     setForm(prev => {
@@ -108,7 +71,7 @@ export default function SystemA({
 
         return {
           ...leg,
-          value
+          [field]: value
         };
       });
 
@@ -149,15 +112,7 @@ export default function SystemA({
   };
 
   // -----------------------------
-  // Date bounds for one-way and round-trip
-  // -----------------------------
-  const dateBounds =
-    tripType !== "multiCity"
-      ? getDateBoundsForPair(form.origin, form.destination)
-      : null;
-
-  // -----------------------------
-  // Submit logic (unchanged)
+  // Submit logic
   // -----------------------------
   const submitSystemA = () => {
     logEvent("systemA", "submit_search", { ...form, tripType });
@@ -244,7 +199,7 @@ export default function SystemA({
     if (found.length > 0) {
       setSuccessfulItineraries(prev => ({
         ...prev,
-        found
+        [tripType]: found
       }));
       setCurrentHint(null);
     } else {
@@ -252,7 +207,7 @@ export default function SystemA({
 
       setFailureCounts(prev => ({
         ...prev,
-        nextFailureCount
+        [tripType]: nextFailureCount
       }));
 
       const hint = getHint({
@@ -294,7 +249,7 @@ export default function SystemA({
     setCurrentHint(null);
     setSuccessfulItineraries(prev => ({
       ...prev,
-      "null": null
+      [tripType]: null
     }));
   };
 
@@ -355,8 +310,6 @@ export default function SystemA({
             Departure Date:
             <input
               type="date"
-              min={dateBounds?.min}
-              max={dateBounds?.max}
               value={form.departDate}
               onChange={e =>
                 setForm(prev => ({ ...prev, departDate: e.target.value }))
@@ -373,8 +326,7 @@ export default function SystemA({
             Return Date:
             <input
               type="date"
-              min={form.departDate || dateBounds?.min}
-              max={dateBounds?.max}
+              min={form.departDate}
               value={form.returnDate}
               onChange={e =>
                 setForm(prev => ({ ...prev, returnDate: e.target.value }))
@@ -384,7 +336,65 @@ export default function SystemA({
         </>
       )}
 
-      {/* Multi-city rendering unchanged */}
+      {tripType === "multiCity" && (
+        <>
+          <h3>Flight Legs</h3>
+
+          {form.legs.map((leg, i) => (
+            <div key={i} style={{ marginBottom: 12 }}>
+              <select
+                value={leg.origin}
+                disabled={i > 0}
+                onChange={e =>
+                  updateLeg(i, "origin", e.target.value)
+                }
+              >
+                {i === 0 ? (
+                  <>
+                    <option value="">Origin</option>
+                    {allOrigins.map(o => (
+                      <option key={o} value={o}>{o}</option>
+                    ))}
+                  </>
+                ) : (
+                  <option value={leg.origin}>{leg.origin}</option>
+                )}
+              </select>
+
+              <select
+                value={leg.destination}
+                onChange={e =>
+                  updateLeg(i, "destination", e.target.value)
+                }
+              >
+                <option value="">Destination</option>
+                {allDestinations
+                  .filter(d => d !== leg.origin)
+                  .map(d => (
+                    <option key={d} value={d}>{d}</option>
+                  ))}
+              </select>
+
+              <input
+                type="date"
+                min={i > 0 ? form.legs[i - 1].departDate : undefined}
+                value={leg.departDate}
+                onChange={e =>
+                  updateLeg(i, "departDate", e.target.value)
+                }
+              />
+
+              {i > 0 && (
+                <button onClick={() => deleteLeg(i)}>
+                  Remove
+                </button>
+              )}
+            </div>
+          ))}
+
+          <button onClick={addLeg}>+ Add Leg</button>
+        </>
+      )}
 
       <br />
 
@@ -403,6 +413,16 @@ export default function SystemA({
         <div style={{ marginTop: 12, color: "#555" }}>
           <strong>Hint:</strong> {currentHint.message}
         </div>
+      )}
+
+      {successfulItineraries[tripType] && (
+        <ul>
+          {successfulItineraries[tripType].map((leg, i) => (
+            <li key={i}>
+              {leg.origin} → {leg.destination} on {leg.departDate}
+            </li>
+          ))}
+        </ul>
       )}
 
       {!canContinue && (
