@@ -1,4 +1,6 @@
-// systemA.js - Component for searching flights with a flexible form that adapts to the selected trip type. Provides hints after failed attempts and tracks successful searches.
+// systemA.js
+// Component for searching form that adapts to the selected trip type.
+// Provides failure-gated hints and soft temporal guardrails while preserving form-first exploration.
 
 import { useEffect, useState } from "react";
 import { getHint } from "../hints/hint";
@@ -25,6 +27,40 @@ export default function SystemA({
   });
 
   const sameAirport = (a, b) => a && b && a === b;
+
+  const toISO = d => d.toISOString().split("T")[0];
+
+  const addDays = (dateStr, days) => {
+    const d = new Date(dateStr);
+    d.setDate(d.getDate() + days);
+    return toISO(d);
+  };
+
+  const todayISO = () => toISO(new Date());
+
+  const getDateBoundsForPair = (origin, destination) => {
+    if (!origin || !destination) return null;
+
+    const matching = flights.filter(
+      f => f.origin === origin && f.destination === destination
+    );
+
+    // Non-viable pair: neutral exploration window
+    if (matching.length === 0) {
+      return {
+        min: todayISO(),
+        max: addDays(todayISO(), 30)
+      };
+    }
+
+    // Viable pair: ±10 days around known availability
+    const dates = matching.map(f => f.departDate).sort();
+
+    return {
+      min: addDays(dates[0], -10),
+      max: addDays(dates[dates.length - 1], 10)
+    };
+  };
 
   // -----------------------------
   // State
@@ -58,7 +94,7 @@ export default function SystemA({
   }, [tripType]);
 
   // -----------------------------
-  // Multi city helpers
+  // Multi‑city helpers
   // -----------------------------
   const updateLeg = (index, field, value) => {
     setForm(prev => {
@@ -110,6 +146,14 @@ export default function SystemA({
       return { ...prev, legs };
     });
   };
+
+  // -----------------------------
+  // Soft date bounds (one‑way & round‑trip only)
+  // -----------------------------
+  const dateBounds =
+    tripType !== "multiCity"
+      ? getDateBoundsForPair(form.origin, form.destination)
+      : null;
 
   // -----------------------------
   // Submit logic
@@ -310,6 +354,8 @@ export default function SystemA({
             Departure Date:
             <input
               type="date"
+              min={dateBounds?.min}
+              max={dateBounds?.max}
               value={form.departDate}
               onChange={e =>
                 setForm(prev => ({ ...prev, departDate: e.target.value }))
@@ -326,7 +372,8 @@ export default function SystemA({
             Return Date:
             <input
               type="date"
-              min={form.departDate}
+              min={form.departDate || dateBounds?.min}
+              max={dateBounds?.max}
               value={form.returnDate}
               onChange={e =>
                 setForm(prev => ({ ...prev, returnDate: e.target.value }))
@@ -365,9 +412,7 @@ export default function SystemA({
                 value={leg.destination}
                 onChange={e =>
                   updateLeg(i, "destination", e.target.value)
-                }
-              >
-                <option value="">Destination</option>
+               lue="">Destination</option>
                 {allDestinations
                   .filter(d => d !== leg.origin)
                   .map(d => (
