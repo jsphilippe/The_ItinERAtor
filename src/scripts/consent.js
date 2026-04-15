@@ -1,4 +1,5 @@
-// consent.js - Component for displaying the research consent form and handling user consent
+// consent.js
+// Component for displaying the research consent form and handling user consent.
 
 import { useState } from "react";
 
