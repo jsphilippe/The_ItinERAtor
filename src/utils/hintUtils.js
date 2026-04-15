@@ -1,4 +1,6 @@
-// hintUtils.js - Utility functions for analyzing flight data and generating insights that can be used for hint generation in the itinerary search experiment. Provides functions to identify terminal airports, check route existence, and retrieve available dates for routes.
+// hintUtils.js
+// Utility functions for analyzing flight data and generating insights that can be used for hint generation in the itinerary search experiment.
+// Provides functions to identify terminal airports, check route existence, and retrieve available dates for routes.
 
 export function analyzeFlights(flights) {
   // -----------------------------
