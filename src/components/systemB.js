@@ -36,13 +36,14 @@ export default function SystemB({
         return null;
       }
 
+      const prev = previousFlight;
       const match = flights.find(
         (f) =>
           f.origin === leg.origin &&
           f.destination === leg.destination &&
           f.departDate === leg.departDate &&
-          (!previousFlight ||
-            (previousFlight.destination === f.origin &&
+          (!prev ||
+            (prev.destination === f.origin &&
               new Date(f.departDate) >= new Date(previousFlight.departDate)))
       );
 
