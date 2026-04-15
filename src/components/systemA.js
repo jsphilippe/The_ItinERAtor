@@ -1,4 +1,4 @@
-// systemA.js
+// systemA.js - Component for searching flights with a flexible form that adapts to the selected trip type. Provides hints after failed attempts and tracks successful searches.
 
 import { useEffect, useState } from "react";
 import { getHint } from "../hints/hint";

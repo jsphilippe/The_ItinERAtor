@@ -17,6 +17,8 @@ import useTripValidation from "./hooks/useTripValidation";
 
 import { analyzeFlights } from "./utils/hintUtils";
 
+import JsonDispo from "./scripts/jsonDispo";
+
 export default function App() {
   // -----------------------------
   // Phase control
@@ -202,31 +204,9 @@ export default function App() {
         />
       )}
 
-      {/* COMPLETE */}
+      {/* POST-STUDY DATA DISPOSITION */}
       {phase === "complete" && (
-        <>
-          <h1>Experiment Complete</h1>
-
-          <button
-            onClick={() => {
-              const blob = new Blob(
-                [JSON.stringify(session, null, 2)],
-                { type: "application/json" }
-              );
-
-              const url = URL.createObjectURL(blob);
-              const a = document.createElement("a");
-
-              a.href = url;
-              a.download = `participant_${session.participantId}.json`;
-              a.click();
-
-              URL.revokeObjectURL(url);
-            }}
-          >
-            Download Session Data
-          </button>
-        </>
+        <JsonDispo session={session} />
       )}
     </div>
   );

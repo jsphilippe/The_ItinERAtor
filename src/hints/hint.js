@@ -1,4 +1,4 @@
-// hint.js
+// hint.js - Logic for generating context-sensitive hints based on user interactions and flight data insights. Hints are designed to guide users through common pitfalls without giving away solutions directly.
 
 export function getHint({
   tripType,
