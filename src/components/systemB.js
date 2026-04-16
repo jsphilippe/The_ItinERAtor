@@ -311,7 +311,7 @@ export default function SystemB({
   } else {
     logEvent("systemB", "zero_results", { tripType });
   }
-
+};
   // -----------------------------
   // Reset search
   // -----------------------------
