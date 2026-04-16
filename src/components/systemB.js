@@ -293,18 +293,24 @@ export default function SystemB({
     const found = itinerary ? itinerary : [];
 
     if (found.length > 0) {
-      if (!firstSuccessTime) {
-        const time = performance.now();
-        setFirstSuccessTime(time);
-        logEvent("systemB", "first_success", { tripType, time });
-      }
+  logEvent("systemB", "results_returned", {
+    tripType,
+    count: found.length
+  });
 
-      setSuccessfulItineraries((prev) => ({
-        ...prev,
-        [tripType]: found,
-      }));
+  if (!firstSuccessTime) {
+      const time = performance.now();
+      setFirstSuccessTime(time);
+      logEvent("systemB", "first_success", { tripType, time });
     }
-  };
+  
+    setSuccessfulItineraries((prev) => ({
+      ...prev,
+      [tripType]: found,
+    }));
+  } else {
+    logEvent("systemB", "zero_results", { tripType });
+  }
 
   // -----------------------------
   // Reset search
