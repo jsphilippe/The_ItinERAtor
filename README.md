@@ -28,6 +28,26 @@ The goal of the project is to study how users reason about constraints and adapt
 
 ---
 
+## Research Questions
+
+This project is guided by the following research questions:
+
+1. How does constraint discovery through failure and feedback differ from constraint enforcement through guided selection in terms of user strategy formation?
+
+2. How do users adapt their behavior when constraints are implicit or softly suggested versus when constraints are made explicit through enforced correctness?
+
+3. What types of errors emerge when users are allowed to explore invalid states, and how do those errors change over time?
+
+4. Does preventing invalid actions reduce cognitive effort at the cost of limiting exploratory learning?
+
+5. How does exposure to soft guardrails influence users’ mental models of system constraints compared to hard enforcement?
+
+6. How do interaction patterns, time to successful completion, and recovery behaviors differ between flexible and guided interfaces?
+
+These questions aim to illuminate tradeoffs between exploration and correctness, and between learning through feedback versus efficiency through prevention.
+
+---
+
 ## Experimental Design
 
 The application implements a within-subjects comparison between two interaction paradigms operating over the same task domain and dataset.
