@@ -71,6 +71,7 @@ export default function App() {
     startSystem,
     completeSystem,
     updateSession,
+    setLoggingEnabled
   } = useSessionLogger(initialSession);
 
   // -----------------------------
