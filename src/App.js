@@ -1,6 +1,15 @@
+
 // App.js
-// Main application component for the Itinerator experiment.
-// Manages overall flow, state, and session logging.
+// Main application component for the ItinERAtor experiment.
+//
+// This component orchestrates the entire experimental flow across phases
+// (consent → instructions → System A → System B → SUS → completion).
+// It also establishes the session-level logging structure used to support
+// post-hoc behavioral and usability analysis.
+//
+// Importantly, App.js enforces clean phase boundaries so that interaction
+// telemetry, evaluative data (SUS), and experimental metadata remain
+// analytically separable.
 
 import { useEffect, useState } from "react";
 
@@ -25,16 +34,29 @@ export default function App() {
   // -----------------------------
   // Phase control
   // -----------------------------
+  // Controls which part of the experiment is currently active.
+  // Phases are strictly sequential and mutually exclusive to prevent
+  // overlap between interaction logging, system usage, and survey collection
   const [phase, setPhase] = useState("consent");
 
   // -----------------------------
   // Trip type
   // -----------------------------
+  // Tracks the currently active itinerary type (one-way, round-trip, multi-city).
+  // This state is shared across systems so that both System A and System B
+  // are exercised over identical task categories.
   const [tripType, setTripType] = useState("oneWay");
 
   // -----------------------------
   // Initial session
   // -----------------------------
+  // Defines the complete shape of the session log.
+  // All interaction data, timing data, and SUS responses are stored locally
+  // in this object and ultimately exported as a single JSON artifact.
+  //
+  // System A and System B intentionally share the same schema so that
+  // differences in behavior can be attributed to interface design rather
+  // than differences in data representation
   const initialSession = {
     participantId: crypto.randomUUID(),
     meta: {
@@ -64,6 +86,11 @@ export default function App() {
   // -----------------------------
   // Session logger
   // -----------------------------
+  // Centralized logging hook that records all interaction telemetry.
+  //
+  // The logging gate (setLoggingEnabled) allows logging to be temporarily
+  // suspended during evaluative phases (e.g., SUS) so that free-text
+  // survey input does not contaminate behavioral interaction logs.
   const {
     session,
     logEvent,
@@ -77,11 +104,17 @@ export default function App() {
   // -----------------------------
   // Validation hook
   // -----------------------------
+  // Shared validation logic derived from the same flight dataset.
+  // Using the same validator for both systems ensures that differences
+  // in user experience arise from interface design rather than logic changes.
   const { validateTrip } = useTripValidation(flights);
 
   // -----------------------------
   // Navigation lock
   // -----------------------------
+  // Prevents browser back navigation during the experiment.
+  // This preserves experimental integrity by avoiding partial sessions,
+  // skipped phases, or corrupted timing data.
   useEffect(() => {
     window.history.pushState({ locked: true }, "", window.location.pathname);
 
@@ -97,6 +130,9 @@ export default function App() {
   // -----------------------------
   // Derived data
   // -----------------------------
+  // Pre-compute shared aggregates and constraint facts from the dataset.
+  // These are passed into systems as read-only inputs to avoid
+  // duplication and to keep constraint logic centralized.
   const allOrigins = [...new Set(flights.map((f) => f.origin))];
   const allDestinations = [...new Set(flights.map((f) => f.destination))];
   const flightFacts = analyzeFlights(flights);
@@ -104,6 +140,9 @@ export default function App() {
   // -----------------------------
   // Start timing when systems mount
   // -----------------------------
+  // Records per-system start times when the corresponding phase is entered.
+  // Timing is measured using performance.now() so that relative durations
+  // can be compared across participants independently of wall-clock time.
   useEffect(() => {
     if (phase === "systemA" && session.systemA.startTime === null) {
       startSystem("systemA");
@@ -117,6 +156,7 @@ export default function App() {
   return (
     <div style={{ padding: "2rem", fontFamily: "sans-serif" }}>
       {/* CONSENT */}
+      {/* Establishes informed consent before any logging begins */}
       {phase === "consent" && (
         <Consent
           logEvent={logEvent}
@@ -126,11 +166,13 @@ export default function App() {
       )}
 
       {/* INSTRUCTIONS */}
+      {/* Provides task framing and ensures a consistent mental baseline */}
       {phase === "instructions" && (
         <Instructions logEvent={logEvent} onBegin={() => setPhase("systemA")} />
       )}
 
       {/* SYSTEM A */}
+      {/* Flexible interface where constraints are inferred through interaction */}
       {phase === "systemA" && (
         <>
           <TripTypeSelector
@@ -160,6 +202,7 @@ export default function App() {
       )}
 
       {/* SYSTEM B */}
+      {/* Guided interface where constraints are enforced proactively */}
       {phase === "systemB" && (
         <>
           <TripTypeSelector
@@ -185,6 +228,7 @@ export default function App() {
       )}
 
       {/* SUS FOR SYSTEM A */}
+      {/* Evaluative phase: logging is suspended to preserve survey integrity */}
       {phase === "susA" && (
         <SUS
           system="systemA"
@@ -196,6 +240,7 @@ export default function App() {
       )}
 
       {/* SUS FOR SYSTEM B */}
+      {/* Identical evaluative treatment ensures comparability */}
       {phase === "susB" && (
         <SUS
           system="systemB"
@@ -207,6 +252,7 @@ export default function App() {
       )}
 
       {/* POST-STUDY DATA DISPOSITION */}
+      {/* Participants manually download their session data for submission */}
       {phase === "complete" && <JsonDispo session={session} />}
     </div>
   );
