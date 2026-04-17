@@ -103,6 +103,6 @@ export default function useSessionLogger(initialSession) {
     startSystem,
     completeSystem,
     updateSession,
-    setLoggingEnabled,
+    setLoggingEnabled
   };
 }
