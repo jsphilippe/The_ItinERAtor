@@ -8,69 +8,88 @@ export default function useSessionLogger(initialSession) {
   const [session, setSession] = useState(() => initialSession);
 
   // -----------------------------
+  // Logging gate
+  // -----------------------------
+  const [loggingEnabled, setLoggingEnabled] = useState(true);
+
+  // -----------------------------
   // Core event logger
   // -----------------------------
-  const logEvent = useCallback((system, type, payload = {}) => {
-    const event = {
-      system,
-      type,
-      payload,
-      timestamp: performance.now()
-    };
+  const logEvent = useCallback(
+    (system, type, payload = {}) => {
+      if (!loggingEnabled) return;
 
-    setSession(prev => ({
-      ...prev,
-      [system]: {
-        ...prev[system],
-        events: [...prev[system].events, event]
-      }
-    }));
-  }, []);
+      const event = {
+        system,
+        type,
+        payload,
+        timestamp: performance.now(),
+      };
+
+      setSession((prev) => ({
+        ...prev,
+        [system]: {
+          ...prev[system],
+          events: [...prev[system].events, event],
+        },
+      }));
+    },
+    [loggingEnabled]
+  );
 
   // -----------------------------
   // Field change logger
   // -----------------------------
-  const logFieldChange = useCallback((system, field, value, prevValue) => {
-    logEvent(system, "field_change", {
-      field,
-      value,
-      prevValue
-    });
-  }, [logEvent]);
+  const logFieldChange = useCallback(
+    (system, field, value, prevValue) => {
+      logEvent(system, "field_change", {
+        field,
+        value,
+        prevValue,
+      });
+    },
+    [logEvent]
+  );
 
   // -----------------------------
   // System lifecycle helpers
   // -----------------------------
-  const startSystem = useCallback((system) => {
-    setSession(prev => ({
-      ...prev,
-      [system]: {
-        ...prev[system],
-        startTime: performance.now()
-      }
-    }));
+  const startSystem = useCallback(
+    (system) => {
+      setSession((prev) => ({
+        ...prev,
+        [system]: {
+          ...prev[system],
+          startTime: performance.now(),
+        },
+      }));
 
-    logEvent(system, "system_start");
-  }, [logEvent]);
+      logEvent(system, "system_start");
+    },
+    [logEvent]
+  );
 
-  const completeSystem = useCallback((system) => {
-    setSession(prev => ({
-      ...prev,
-      [system]: {
-        ...prev[system],
-        endTime: performance.now(),
-        completed: true
-      }
-    }));
+  const completeSystem = useCallback(
+    (system) => {
+      setSession((prev) => ({
+        ...prev,
+        [system]: {
+          ...prev[system],
+          endTime: performance.now(),
+          completed: true,
+        },
+      }));
 
-    logEvent(system, "system_complete");
-  }, [logEvent]);
+      logEvent(system, "system_complete");
+    },
+    [logEvent]
+  );
 
   // -----------------------------
   // Direct session updater (rare use)
   // -----------------------------
   const updateSession = useCallback((updaterFn) => {
-    setSession(prev => updaterFn(prev));
+    setSession((prev) => updaterFn(prev));
   }, []);
 
   // -----------------------------
@@ -83,6 +102,7 @@ export default function useSessionLogger(initialSession) {
     logFieldChange,
     startSystem,
     completeSystem,
-    updateSession
+    updateSession,
+    setLoggingEnabled,
   };
 }
