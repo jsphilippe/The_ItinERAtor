@@ -136,14 +136,15 @@ All data collection occurs entirely on the client side.
 During interaction, the system logs:
 
 - field changes  
-- option presentation counts  
+- search submissions and outcomes  
 - failed and successful attempts  
-- timing information  
 - hint exposure events  
+- reset behavior  
+- timing information  
 
 At the end of the experiment, participants download a JSON file containing the complete session log. This file serves as the authoritative, lossless record of interaction data. No information is automatically transmitted or stored by the application.
 
-Derived artifacts, including System Usability Scale scores and PDF summaries, are generated offline from the downloaded JSON files during analysis. The application itself does not compute SUS scores or generate reports.
+System Usability Scale item responses are collected as a form and recorded upon survey submission. SUS scores are computed immediately using the standard scoring formula and stored alongside the raw item responses in the session log. Aggregate analysis, visualization, and reporting are performed offline using the downloaded JSON files.
 
 This separation preserves transparency, reproducibility, and compatibility with static hosting environments such as GitHub Pages.
 
