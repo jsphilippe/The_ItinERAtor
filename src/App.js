@@ -40,25 +40,25 @@ export default function App() {
     meta: {
       createdAt: new Date().toISOString(),
       userAgent: navigator.userAgent,
-      condition: "oneWay"
+      condition: "oneWay",
     },
     experiment: {
-      events: []
+      events: [],
     },
     systemA: {
       startTime: null,
       endTime: null,
       completed: false,
       events: [],
-      sus: null
+      sus: null,
     },
     systemB: {
       startTime: null,
       endTime: null,
       completed: false,
       events: [],
-      sus: null
-    }
+      sus: null,
+    },
   };
 
   // -----------------------------
@@ -70,7 +70,7 @@ export default function App() {
     logFieldChange,
     startSystem,
     completeSystem,
-    updateSession
+    updateSession,
   } = useSessionLogger(initialSession);
 
   // -----------------------------
@@ -96,8 +96,8 @@ export default function App() {
   // -----------------------------
   // Derived data
   // -----------------------------
-  const allOrigins = [...new Set(flights.map(f => f.origin))];
-  const allDestinations = [...new Set(flights.map(f => f.destination))];
+  const allOrigins = [...new Set(flights.map((f) => f.origin))];
+  const allDestinations = [...new Set(flights.map((f) => f.destination))];
   const flightFacts = analyzeFlights(flights);
 
   // -----------------------------
@@ -126,10 +126,7 @@ export default function App() {
 
       {/* INSTRUCTIONS */}
       {phase === "instructions" && (
-        <Instructions
-          logEvent={logEvent}
-          onBegin={() => setPhase("systemA")}
-        />
+        <Instructions logEvent={logEvent} onBegin={() => setPhase("systemA")} />
       )}
 
       {/* SYSTEM A */}
@@ -192,6 +189,7 @@ export default function App() {
           system="systemA"
           logEvent={logEvent}
           updateSession={updateSession}
+          setLoggingEnabled={setLoggingEnabled}
           onComplete={() => setPhase("susB")}
         />
       )}
@@ -202,14 +200,13 @@ export default function App() {
           system="systemB"
           logEvent={logEvent}
           updateSession={updateSession}
+          setLoggingEnabled={setLoggingEnabled}
           onComplete={() => setPhase("complete")}
         />
       )}
 
       {/* POST-STUDY DATA DISPOSITION */}
-      {phase === "complete" && (
-        <JsonDispo session={session} />
-      )}
+      {phase === "complete" && <JsonDispo session={session} />}
     </div>
   );
 }
