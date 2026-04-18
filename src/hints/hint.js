@@ -1,4 +1,3 @@
-
 // hint.js
 //
 // Logic for generating context-sensitive hints in System A based on
@@ -19,12 +18,7 @@
 // the same constraints are enforced proactively through available options,
 // making reactive guidance unnecessary.
 
-export function getHint({
-  tripType,
-  failureCount,
-  lastAttempt,
-  flightFacts
-}) {
+export function getHint({ tripType, failureCount, lastAttempt, flightFacts }) {
   // -----------------------------
   // Guard: do not hint too early
   // -----------------------------
@@ -40,7 +34,7 @@ export function getHint({
   const {
     terminalAirports = [],
     hasRoute = () => false,
-    getAvailableDates = () => []
+    getAvailableDates = () => [],
   } = flightFacts || {};
 
   // -----------------------------
@@ -60,20 +54,20 @@ export function getHint({
       return {
         type: "form_incomplete",
         message:
-          "Some itinerary details are still missing. Try completing all fields before evaluating route availability."
+          "Some itinerary details are still missing. Try completing all fields before evaluating route availability.",
       };
     }
   } else {
     const legs = lastAttempt?.legs || [];
     const incompleteLeg = legs.some(
-      leg => !leg.origin || !leg.destination || !leg.departDate
+      (leg) => !leg.origin || !leg.destination || !leg.departDate
     );
 
     if (incompleteLeg) {
       return {
         type: "form_incomplete",
         message:
-          "Each leg of a multi-city trip requires an origin, destination, and departure date."
+          "Each leg of a multi-city trip requires an origin, destination, and departure date.",
       };
     }
   }
@@ -87,15 +81,11 @@ export function getHint({
   if (tripType !== "multiCity") {
     const { origin, destination } = lastAttempt || {};
 
-    if (
-      origin &&
-      destination &&
-      !hasRoute(origin, destination)
-    ) {
+    if (origin && destination && !hasRoute(origin, destination)) {
       return {
         type: "route_may_not_exist",
         message:
-          "This origin and destination pairing may not be viable in this system."
+          "This origin and destination pairing may not be viable in this system.",
       };
     }
   }
@@ -109,22 +99,14 @@ export function getHint({
   if (tripType === "oneWay") {
     const { origin, destination, departDate } = lastAttempt || {};
 
-    if (
-      origin &&
-      destination &&
-      departDate &&
-      hasRoute(origin, destination)
-    ) {
+    if (origin && destination && departDate && hasRoute(origin, destination)) {
       const availableDates = getAvailableDates(origin, destination);
 
-      if (
-        availableDates.length > 0 &&
-        !availableDates.includes(departDate)
-      ) {
+      if (availableDates.length > 0 && !availableDates.includes(departDate)) {
         return {
           type: "date_unavailable",
           message:
-            "This route exists, but flights are only available on certain dates."
+            "This route exists, but flights are only available on certain dates.",
         };
       }
     }
@@ -148,7 +130,7 @@ export function getHint({
       return {
         type: "no_return",
         message:
-          "This destination may not support a return flight to the origin. Not all routes allow round-trip travel."
+          "This destination may not support a return flight to the origin. Not all routes allow round-trip travel.",
       };
     }
   }
@@ -170,7 +152,7 @@ export function getHint({
       return {
         type: "terminal_airport",
         message:
-          "This airport has no onward flights. Multi-city trips typically must end here."
+          "This airport has no onward flights. Multi-city trips typically must end here.",
       };
     }
   }
@@ -185,6 +167,6 @@ export function getHint({
   return {
     type: "general_constraint",
     message:
-      "Not all routes in this system are available under all conditions."
+      "Not all routes in this system are available under all conditions.",
   };
 }
