@@ -1,5 +1,17 @@
 // instructions.js
-// Component for displaying the study instructions and handling the start of the study.
+//
+// Component responsible for presenting the study instructions and
+// transitioning participants from consent into the experimental task.
+//
+// This component establishes a shared mental model for all participants
+// before any system interaction occurs. In particular, it:
+// - Frames the task as exploratory rather than accuracy-focused
+// - Explicitly normalizes confusion and difficulty
+// - Reduces performance anxiety that could bias interaction behavior
+// - Encourages naturalistic problem-solving strategies
+//
+// Instruction begin events are logged symmetrically for both systems to
+// establish a clear temporal boundary between briefing and interaction.
 
 export default function Instructions({ onBegin, logEvent }) {
   return (
@@ -56,6 +68,9 @@ export default function Instructions({ onBegin, logEvent }) {
 
       <button
         onClick={() => {
+          // Mark the transition from instruction phase to system interaction.
+          // Events are logged for both systems so that the start of interaction
+          // can be aligned across systems in post-hoc timing analysis.
           logEvent("systemA", "instructions_begin");
           logEvent("systemB", "instructions_begin");
           onBegin();
