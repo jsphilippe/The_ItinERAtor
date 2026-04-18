@@ -1,5 +1,15 @@
 // systemB.js
-// Component for searching flights with a guided form that only allows valid options based on the selected trip type. Tracks successful searches and time to first success.
+//
+// Component implementing System B: a guided itinerary search interface.
+//
+// System B represents a constraint-aware interaction paradigm in which
+// only valid options are ever presented to the user. Constraints derived
+// from the dataset are enforced proactively through dynamic option filtering
+// and date bounding.
+//
+// Unlike System A, System B does not rely on failure, post-hoc validation,
+// or hints. Every reachable state corresponds to at least one feasible
+// itinerary, shifting cognitive effort from the user to the interface.
 
 import { useEffect, useMemo, useState } from "react";
 
@@ -13,6 +23,8 @@ export default function SystemB({
   // -----------------------------
   // Helpers
   // -----------------------------
+  // Provides a clean initial state for all trip types.
+  // Form resets eliminate carryover from previous task contexts.
   const emptyForm = () => ({
     origin: "",
     destination: "",
@@ -24,6 +36,13 @@ export default function SystemB({
   // -----------------------------
   // Unified itinerary builder
   // -----------------------------
+  // Attempts to construct a valid itinerary from a sequence of legs.
+  //
+  // This function embodies the core contract of System B:
+  // if the UI allows a combination to be selected, it must correspond
+  // to at least one concrete sequence of flights in the dataset.
+  //
+  // Failure here indicates an impossibility, not recoverable user error.
   const buildValidItinerary = (flights, legs) => {
     let previousFlight = null;
     const builtFlights = [];
@@ -66,26 +85,36 @@ export default function SystemB({
   // -----------------------------
   // State
   // -----------------------------
+  // Tracks current guided form state.
   const [form, setForm] = useState(emptyForm());
 
+  // Tracks successful itinerary completions for each trip type.
+  // All must be completed before proceeding.
   const [successfulItineraries, setSuccessfulItineraries] = useState({
     oneWay: null,
     roundTrip: null,
     multiCity: null,
   });
 
+  // Captures time to first successful itinerary.
+  // Used as an efficiency metric for guided interaction.
   const [firstSuccessTime, setFirstSuccessTime] = useState(null);
 
   // -----------------------------
   // Reset on trip type change
   // -----------------------------
+  // Prevents strategy leakage between trip types.
   useEffect(() => {
     setForm(emptyForm());
   }, [tripType]);
 
   // -----------------------------
-  // Preloaded viable origins
+  // Viable origins
   // -----------------------------
+  // Precomputes origins that can participate in at least one valid itinerary
+  // given the selected trip type.
+  //
+  // For round trips, origins must support feasible return paths.
   const viableOrigins = useMemo(() => {
     if (tripType === "roundTrip") {
       return [
@@ -105,8 +134,10 @@ export default function SystemB({
   }, [flights, tripType]);
 
   // -----------------------------
-  // Preloaded viable destinations
+  // Viable destinations
   // -----------------------------
+  // Computes destination options that preserve future feasibility.
+  // Impossible paths are never surfaced.
   const viableDestinations = useMemo(() => {
     if (!form.origin) return [];
 
@@ -164,6 +195,8 @@ export default function SystemB({
   // -----------------------------
   // Viable departure dates
   // -----------------------------
+  // Restricts departure dates to those that actually exist
+  // in the dataset for the selected origin destination pair.
   const viableDepartDates = useMemo(() => {
     if (!form.origin || !form.destination) return [];
     return [
@@ -187,6 +220,8 @@ export default function SystemB({
   // -----------------------------
   // Viable return dates
   // -----------------------------
+  // Return dates are filtered to only those that maintain temporal
+  // feasibility relative to the outbound leg.
   const viableReturnDates = useMemo(() => {
     if (
       tripType !== "roundTrip" ||
@@ -218,8 +253,9 @@ export default function SystemB({
   }, [viableReturnDates]);
 
   // -----------------------------
-  // Multi city helpers
+  // Multi-city helpers
   // -----------------------------
+  // Maintains leg structure while preserving feasibility constraints.
   const updateLeg = (index, field, value) => {
     setForm((prev) => ({
       ...prev,
@@ -253,8 +289,10 @@ export default function SystemB({
   };
 
   // -----------------------------
-  // Submit logic (UNIFIED)
+  // Submit logic
   // -----------------------------
+  // Submission simply assembles the itinerary from the guided form.
+  // Failure is rare by construction and serves as a sanity check.
   const submitSystemB = () => {
     logEvent("systemB", "submit_search", { ...form, tripType });
 
@@ -293,28 +331,29 @@ export default function SystemB({
     const found = itinerary ? itinerary : [];
 
     if (found.length > 0) {
-  logEvent("systemB", "results_returned", {
-    tripType,
-    count: found.length
-  });
+      logEvent("systemB", "results_returned", {
+        tripType,
+        count: found.length,
+      });
 
-  if (!firstSuccessTime) {
-      const time = performance.now();
-      setFirstSuccessTime(time);
-      logEvent("systemB", "first_success", { tripType, time });
+      if (!firstSuccessTime) {
+        const time = performance.now();
+        setFirstSuccessTime(time);
+        logEvent("systemB", "first_success", { tripType, time });
+      }
+
+      setSuccessfulItineraries((prev) => ({
+        ...prev,
+        [tripType]: found,
+      }));
+    } else {
+      logEvent("systemB", "zero_results", { tripType });
     }
-  
-    setSuccessfulItineraries((prev) => ({
-      ...prev,
-      [tripType]: found,
-    }));
-  } else {
-    logEvent("systemB", "zero_results", { tripType });
-  }
-};
+  };
   // -----------------------------
   // Reset search
   // -----------------------------
+  // Allows participants to abandon a strategy explicitly.
   const resetSearch = () => {
     logEvent("systemB", "reset_search", {
       tripType,
@@ -331,6 +370,8 @@ export default function SystemB({
   // -----------------------------
   // Completion gate
   // -----------------------------
+  // Participants must successfully complete all trip types
+  // before proceeding, ensuring equivalent task exposure
   const canContinue =
     successfulItineraries.oneWay &&
     successfulItineraries.roundTrip &&
@@ -339,6 +380,8 @@ export default function SystemB({
   // -----------------------------
   // Render
   // -----------------------------
+  // UI prevents invalid selections entirely.
+  // This is the defining contrast with System A.
   return (
     <>
       <h1>System B: Guided Search</h1>
