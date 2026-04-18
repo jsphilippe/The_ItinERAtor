@@ -3,13 +3,14 @@
 // Component implementing System B: a guided itinerary search interface.
 //
 // System B represents a constraint-aware interaction paradigm in which
-// only valid options are ever presented to the user. Constraints derived
-// from the dataset are enforced proactively through dynamic option filtering
-// and date bounding.
+// all constraints are enforced proactively through interface affordances.
 //
-// Unlike System A, System B does not rely on failure, post-hoc validation,
-// or hints. Every reachable state corresponds to at least one feasible
-// itinerary, shifting cognitive effort from the user to the interface.
+// Only options that participate in at least one feasible itinerary are
+// presented to the user. As a result, invalid states are unreachable by design.
+//
+// Unlike System A, correctness is enforced prior to submission rather than
+// inferred through failure and post-hoc feedback. This shifts cognitive
+// effort from trial-and-error exploration to constraint-guided selection.
 
 import { useEffect, useMemo, useState } from "react";
 
