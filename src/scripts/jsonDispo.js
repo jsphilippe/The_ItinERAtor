@@ -1,8 +1,20 @@
 // jsonDispo.js
-// Component for final session data download and submission instructions after experiment completion.
-// Provides a button to download the session data as a JSON file, which participants can then submit to the research team.
+//
+// Component responsible for final data disposition after experiment completion.
+//
+// This component explicitly transfers control of the collected session data
+// to the participant by requiring manual download and submission. No data is
+// transmitted automatically, stored remotely, or processed server-side.
+//
+// This design serves three purposes:
+// 1. Preserves participant agency and transparency
+// 2. Ensures compatibility with static hosting environments
+// 3. Produces a single, lossless artifact suitable for offline analysis
 
 export default function JsonDispo({ session }) {
+  // Generates a downloadable JSON file containing the complete session log.
+  // The file includes interaction events, timing data, and finalized SUS
+  // responses, but contains no personally identifiable information.
   const downloadSessionFile = () => {
     const blob = new Blob([JSON.stringify(session, null, 2)], {
       type: "application/json",
@@ -11,9 +23,12 @@ export default function JsonDispo({ session }) {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
 
+    // The filename encodes a participant identifier only.
+    // No real-world identity information is included.
     link.href = url;
     link.download = `participant_${session.participantId}.json`;
 
+    // Trigger the download programmatically and clean up immediately.
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -40,16 +55,16 @@ export default function JsonDispo({ session }) {
         one of the following methods:
       </p>
 
-      <p>
-        Email the file as an attachment to:
-      </p>
+      <p>Email the file as an attachment to:</p>
 
       <p>
-        Jacques Philippe: jphilippe@wpi.edu
-        <br />
-        Kenneth Doan: kmdoan@wpi.edu
-        <br />
-        Jonathan Golden: jegolden@wpi.edu
+        <strong>
+          Jacques Philippe: jphilippe@wpi.edu
+          <br />
+          Kenneth Doan: kmdoan@wpi.edu
+          <br />
+          Jonathan Golden: jegolden@wpi.edu
+        </strong>
       </p>
 
       <p>
