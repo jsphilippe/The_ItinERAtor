@@ -1,9 +1,22 @@
 // consent.js
-// Component for displaying the research consent form and handling user consent.
+//
+// Component responsible for presenting the research consent form and
+// recording participant consent decisions.
+//
+// This component serves two critical purposes:
+// 1. Ensuring informed consent before any experimental interaction begins
+// 2. Establishing an auditable record of consent-related actions without
+//    collecting personally identifiable information
+//
+// Consent interactions are logged symmetrically for both System A and System B
+// so that all participant actions prior to system interaction are captured
+// consistently, regardless of later system order.
 
 import { useState } from "react";
 
 export default function Consent({ onAccept, onDecline, logEvent }) {
+  // Tracks whether the participant has acknowledged the consent statement.
+  // Progression to the experiment is disabled until consent is explicitly given.
   const [checked, setChecked] = useState(false);
 
   return (
@@ -26,20 +39,20 @@ export default function Consent({ onAccept, onDecline, logEvent }) {
       </p>
 
       <p>
-        <strong>What to expect:</strong> You will complete three flight search tasks and then
-        answer a brief 10‑question usability survey known as the System
-        Usability Scale (SUS). Some tasks may feel confusing, inefficient, or
-        difficult. This is intentional and expected. Please interact with the
-        system as naturally as you would if you were using a real flight booking
-        website.
+        <strong>What to expect:</strong> You will complete three flight search
+        tasks and then answer a brief 10‑question usability survey known as the
+        System Usability Scale (SUS). Some tasks may feel confusing,
+        inefficient, or difficult. This is intentional and expected. Please
+        interact with the system as naturally as you would if you were using a
+        real flight booking website.
       </p>
 
       <p>
-        <strong>Data and privacy:</strong> Your interactions with the interface, including
-        clicks, selections, timing data, and survey responses, will be recorded
-        anonymously in JSON log files. No names, contact information, or other
-        personally identifiable data are collected. All data will be used solely
-        for academic research and course evaluation purposes.
+        <strong>Data and privacy:</strong> Your interactions with the interface,
+        including clicks, selections, timing data, and survey responses, will be
+        recorded anonymously in JSON log files. No names, contact information,
+        or other personally identifiable data are collected. All data will be
+        used solely for academic research and course evaluation purposes.
       </p>
 
       <p>
@@ -77,6 +90,10 @@ export default function Consent({ onAccept, onDecline, logEvent }) {
           onChange={(e) => {
             const value = e.target.checked;
             setChecked(value);
+
+            // Log consent checkbox interaction for both systems.
+            // This ensures that pre-task interaction history is
+            // symmetric and complete regardless of later system order.
             logEvent("systemA", "consent_checkbox", { value });
             logEvent("systemB", "consent_checkbox", { value });
           }}
@@ -91,6 +108,10 @@ export default function Consent({ onAccept, onDecline, logEvent }) {
         disabled={!checked}
         onClick={() => {
           const timestamp = performance.now();
+
+          // Record explicit consent with a timestamp.
+          // Consent is logged before any system interaction begins,
+          // providing an auditable boundary for experimental data.
           logEvent("systemA", "consent_given", { timestamp });
           logEvent("systemB", "consent_given", { timestamp });
           onAccept();
@@ -104,6 +125,8 @@ export default function Consent({ onAccept, onDecline, logEvent }) {
 
       <button
         onClick={() => {
+          // Record consent refusal symmetrically for completeness.
+          // No further interaction data is recorded after decline.
           logEvent("systemA", "consent_declined");
           logEvent("systemB", "consent_declined");
           onDecline();
