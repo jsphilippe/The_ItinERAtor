@@ -1,8 +1,25 @@
 // sus.js
-// System Usability Scale component with added open-ended questions for richer feedback.
+//
+// System Usability Scale (SUS) component with additional open-ended questions.
+//
+// This component represents the *evaluative* phase of the experiment and is
+// intentionally treated as an atomic form submission rather than an
+// interactive surface.
+//
+// Key methodological decisions embodied here:
+// - Intermediate survey interactions are not logged
+// - Logging is explicitly suspended during SUS completion
+// - SUS is submitted once, producing a single evaluative record
+// - Raw item responses are preserved alongside computed scores
+//
+// These choices ensure that evaluative data is not contaminated by
+// fine-grained interaction telemetry and that responses reflect participants'
+// final judgments rather than transient edits.
 
 import { useState, useEffect, useRef } from "react";
 
+// Standard 10-item System Usability Scale statements.
+// Items alternate between positive and negative framing as defined by SUS.
 const SUS_QUESTIONS = [
   "I think that I would like to use this system frequently.",
   "I found the system unnecessarily complex.",
@@ -16,7 +33,9 @@ const SUS_QUESTIONS = [
   "I needed to learn a lot of things before I could get going with this system.",
 ];
 
-// Open-ended questions
+// Open-ended questions used to capture qualitative context.
+// These allow participants to explain strategies, confusion, and perceptions
+// that may not be fully reflected in Likert-scale responses.
 const OPEN_ENDED_QUESTIONS = [
   {
     id: "frustration",
@@ -43,6 +62,8 @@ const OPEN_ENDED_QUESTIONS = [
   },
 ];
 
+// Compute SUS score using the standard scoring formula.
+// Raw responses are transformed post-hoc; the formula is fixed and widely used.
 function computeSUS(responses) {
   const adjusted = responses.map((r, i) => (i % 2 === 0 ? r - 1 : 5 - r));
   return adjusted.reduce((a, b) => a + b, 0) * 2.5;
@@ -55,22 +76,32 @@ export default function SUS({
   setLoggingEnabled,
   onComplete,
 }) {
+  // Stores Likert-scale responses for the standard SUS items.
+  // Values are collected but not logged incrementally.
   const [responses, setResponses] = useState(
     Array(SUS_QUESTIONS.length).fill(null)
   );
 
+  // Stores free-text responses for open-ended questions.
+  // Keystrokes and intermediate edits are intentionally not logged.
   const [openResponses, setOpenResponses] = useState({});
 
+  // Prevent duplicate phase-start logging (e.g., under React StrictMode).
   const hasLoggedStart = useRef(false);
 
   useEffect(() => {
     if (hasLoggedStart.current) return;
     hasLoggedStart.current = true;
 
+    // Suspend interaction logging while SUS is active.
+    // This prevents free-text survey input from contaminating behavioral logs.
     setLoggingEnabled(false);
+
+    // Record the entry into the SUS phase at the experiment level.
     logEvent("experiment", "sus_started", { system });
   }, [system, logEvent, setLoggingEnabled]);
 
+  // Update a Likert-scale response locally without emitting events.
   const updateResponse = (index, value) => {
     setResponses((prev) => {
       const next = [...prev];
@@ -79,6 +110,7 @@ export default function SUS({
     });
   };
 
+  // Update an open-ended response locally without emitting events.
   const updateOpenResponse = (id, value) => {
     setOpenResponses((prev) => ({
       ...prev,
@@ -86,13 +118,21 @@ export default function SUS({
     }));
   };
 
+  // Require all SUS items to be answered and at least one open-ended response.
+  // This ensures that quantitative ratings are contextualized with
+  // qualitative feedback.
   const allAnswered =
     responses.every((r) => r !== null) &&
     Object.values(openResponses).some((v) => v && v.trim() !== "");
 
   const submitSUS = () => {
+    // Compute the SUS score at submission time using the standard formula.
+    // The score is stored alongside raw responses for convenience and
+    // reproducibility.
     const score = computeSUS(responses);
 
+    // Store finalized SUS data atomically within the session object.
+    // This avoids partial or incremental survey artifacts.
     updateSession((prev) => ({
       ...prev,
       [system]: {
@@ -106,8 +146,10 @@ export default function SUS({
       },
     }));
 
+    // Re-enable interaction logging for subsequent phases.
     setLoggingEnabled(true);
 
+    // Record survey completion as a single experiment-level event.
     logEvent("experiment", "sus_submitted", {
       system,
       score,
