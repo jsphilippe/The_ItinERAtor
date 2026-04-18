@@ -1,7 +1,16 @@
 // systemA.js
-// Component for searching flights with a flexible form that adapts to the selected trip type.
-// Provides hints after failed attempts and tracks successful searches.
-// Soft date guardrails constrain date pickers without enforcing outcomes.
+//
+// Component implementing System A: a flexible itinerary search interface.
+//
+// System A represents an interaction paradigm where users are allowed to
+// explore freely, including entering incomplete or invalid itineraries.
+// Constraints are not enforced preemptively. Instead, they are discovered
+// through failure, submission feedback, and abstract hints after repeated
+// unsuccessful attempts.
+//
+// This system is intentionally designed to expose the cognitive cost of
+// hidden constraints while still providing enough scaffolding to prevent
+// total deadlock.
 
 import { useEffect, useState } from "react";
 import { getHint } from "../hints/hint";
@@ -14,22 +23,24 @@ export default function SystemA({
   flightFacts,
   logEvent,
   logFieldChange,
-  onComplete
+  onComplete,
 }) {
   // -----------------------------
-  // Helpers
+  // Helper utilities
   // -----------------------------
+  // These helpers support form management and soft guardrails.
+  // Importantly, none of these helpers enforce correctness outright.
   const emptyForm = () => ({
     origin: "",
     destination: "",
     departDate: "",
     returnDate: "",
-    legs: [{ origin: "", destination: "", departDate: "" }]
+    legs: [{ origin: "", destination: "", departDate: "" }],
   });
 
   const sameAirport = (a, b) => a && b && a === b;
 
-  const toISO = d => d.toISOString().split("T")[0];
+  const toISO = (d) => d.toISOString().split("T")[0];
 
   const addDays = (dateStr, days) => {
     const d = new Date(dateStr);
@@ -39,52 +50,67 @@ export default function SystemA({
 
   const todayISO = () => toISO(new Date());
 
+  // Derive soft date bounds for a route.
+  // These bounds shape user input but do not guarantee success.
+  // Users may still select dates that yield no results.
   const getDateBoundsForPair = (origin, destination) => {
     if (!origin || !destination) return null;
 
     const matching = flights.filter(
-      f => f.origin === origin && f.destination === destination
+      (f) => f.origin === origin && f.destination === destination
     );
 
     if (matching.length === 0) {
+      // Provide a default exploratory window when no flights exist.
       return {
         min: todayISO(),
-        max: addDays(todayISO(), 30)
+        max: addDays(todayISO(), 30),
       };
     }
 
-    const dates = matching.map(f => f.departDate).sort();
+    const dates = matching.map((f) => f.departDate).sort();
 
     return {
       min: addDays(dates[0], -10),
-      max: addDays(dates[dates.length - 1], 10)
+      max: addDays(dates[dates.length - 1], 10),
     };
   };
 
   // -----------------------------
   // State
   // -----------------------------
+  // Tracks current form input.
   const [form, setForm] = useState(emptyForm());
+
+  // Tracks whether a submission has occurred.
   const [attempted, setAttempted] = useState(false);
+
+  // Stores results from the most recent search attempt.
   const [attemptResult, setAttemptResult] = useState(null);
 
+  // Tracks successful itineraries per trip type.
+  // All three must be completed before progression is allowed.
   const [successfulItineraries, setSuccessfulItineraries] = useState({
     oneWay: null,
     roundTrip: null,
-    multiCity: null
+    multiCity: null,
   });
 
+  // Failure counters used to gate hint presentation.
   const [failureCounts, setFailureCounts] = useState({
     oneWay: 0,
     roundTrip: 0,
-    multiCity: 0
+    multiCity: 0,
   });
 
+  // Currently active hint.
   const [currentHint, setCurrentHint] = useState(null);
 
   // -----------------------------
   // Reset transient state on trip type change
   // -----------------------------
+  // Ensures that each trip type is approached independently,
+  // preventing carryover from prior partial attempts.
   useEffect(() => {
     setForm(emptyForm());
     setAttempted(false);
@@ -95,8 +121,10 @@ export default function SystemA({
   // -----------------------------
   // Multi city helpers
   // -----------------------------
+  // These helpers maintain continuity between legs without enforcing
+  // validity. Invalid paths can still be constructed and submitted.
   const updateLeg = (index, field, value) => {
-    setForm(prev => {
+    setForm((prev) => {
       const legs = prev.legs.map((leg, i) => {
         if (i !== index) return { ...leg };
 
@@ -106,14 +134,14 @@ export default function SystemA({
 
         return {
           ...leg,
-          [field]: value
+          [field]: value,
         };
       });
 
       if (field === "destination" && legs[index + 1]) {
         legs[index + 1] = {
           ...legs[index + 1],
-          origin: value
+          origin: value,
         };
       }
 
@@ -122,7 +150,7 @@ export default function SystemA({
   };
 
   const addLeg = () => {
-    setForm(prev => {
+    setForm((prev) => {
       const last = prev.legs[prev.legs.length - 1];
       return {
         ...prev,
@@ -131,26 +159,29 @@ export default function SystemA({
           {
             origin: last.destination || "",
             destination: "",
-            departDate: ""
-          }
-        ]
+            departDate: "",
+          },
+        ],
       };
     });
   };
 
-  const deleteLeg = index => {
-    setForm(prev => {
+  const deleteLeg = (index) => {
+    setForm((prev) => {
       if (prev.legs.length === 1) return prev;
       return {
         ...prev,
-        legs: prev.legs.filter((_, i) => i !== index)
+        legs: prev.legs.filter((_, i) => i !== index),
       };
     });
   };
 
   // -----------------------------
-  // Date bounds
+  // Soft date bounds
   // -----------------------------
+  // These bounds constrain pickers to plausible windows but do not
+  // prevent invalid selections or guarantee valid itineraries.
+
   const outboundBounds =
     tripType === "roundTrip" || tripType === "oneWay"
       ? getDateBoundsForPair(form.origin, form.destination)
@@ -164,6 +195,8 @@ export default function SystemA({
   // -----------------------------
   // Clamp invalid return date when depart changes
   // -----------------------------
+  // Removes obviously impossible return dates while preserving
+  // exploratory freedom elsewhere.
   useEffect(() => {
     if (tripType !== "roundTrip") return;
 
@@ -172,9 +205,9 @@ export default function SystemA({
       form.departDate &&
       new Date(form.returnDate) < new Date(form.departDate)
     ) {
-      setForm(prev => ({
+      setForm((prev) => ({
         ...prev,
-        returnDate: ""
+        returnDate: "",
       }));
     }
   }, [form.departDate, form.returnDate, tripType]);
@@ -192,13 +225,13 @@ export default function SystemA({
   const returnMax = inboundBounds?.max;
 
   const returnDisabled =
-    returnMin &&
-    returnMax &&
-    new Date(returnMin) > new Date(returnMax);
+    returnMin && returnMax && new Date(returnMin) > new Date(returnMax);
 
   // -----------------------------
   // Submit logic
   // -----------------------------
+  // Submission evaluates the form post-hoc against the dataset.
+  // This is where hidden constraints surface through failure.
   const submitSystemA = () => {
     logEvent("systemA", "submit_search", { ...form, tripType });
     setAttempted(true);
@@ -215,7 +248,7 @@ export default function SystemA({
         found = [];
       } else {
         found = flights.filter(
-          f =>
+          (f) =>
             f.origin === form.origin &&
             f.destination === form.destination &&
             f.departDate === form.departDate
@@ -235,23 +268,21 @@ export default function SystemA({
         found = [];
       } else {
         const outbound = flights.filter(
-          f =>
+          (f) =>
             f.origin === form.origin &&
             f.destination === form.destination &&
             f.departDate === form.departDate
         );
 
         const inbound = flights.filter(
-          f =>
+          (f) =>
             f.origin === form.destination &&
             f.destination === form.origin &&
             f.departDate === form.returnDate
         );
 
         found =
-          outbound.length && inbound.length
-            ? [...outbound, ...inbound]
-            : [];
+          outbound.length && inbound.length ? [...outbound, ...inbound] : [];
       }
     }
 
@@ -265,11 +296,12 @@ export default function SystemA({
         if (i > 0) {
           const prev = legs[i - 1];
           if (leg.origin !== prev.destination) return false;
-          if (new Date(leg.departDate) < new Date(prev.departDate)) return false;
+          if (new Date(leg.departDate) < new Date(prev.departDate))
+            return false;
         }
 
         return flights.some(
-          f =>
+          (f) =>
             f.origin === leg.origin &&
             f.destination === leg.destination &&
             f.departDate === leg.departDate
@@ -282,24 +314,26 @@ export default function SystemA({
     setAttemptResult(found);
 
     if (found.length > 0) {
-      setSuccessfulItineraries(prev => ({
+      // Successful submission records achievement without hinting
+      setSuccessfulItineraries((prev) => ({
         ...prev,
-        [tripType]: found
+        [tripType]: found,
       }));
       setCurrentHint(null);
     } else {
+      // Failure increments counter and may trigger abstract hinting.
       const nextFailureCount = failureCounts[tripType] + 1;
 
-      setFailureCounts(prev => ({
+      setFailureCounts((prev) => ({
         ...prev,
-        [tripType]: nextFailureCount
+        [tripType]: nextFailureCount,
       }));
 
       const hint = getHint({
         tripType,
         failureCount: nextFailureCount,
         lastAttempt: form,
-        flightFacts
+        flightFacts,
       });
 
       if (hint) {
@@ -307,7 +341,7 @@ export default function SystemA({
         logEvent("systemA", "hint_shown", {
           tripType,
           hintType: hint.type,
-          failureCount: nextFailureCount
+          failureCount: nextFailureCount,
         });
       }
     }
@@ -322,25 +356,28 @@ export default function SystemA({
   // -----------------------------
   // Reset search
   // -----------------------------
+  // Allows participants to abandon a strategy explicitly.
   const resetSearch = () => {
     logEvent("systemA", "reset_search", {
       tripType,
-      hadSuccess: !!successfulItineraries[tripType]
+      hadSuccess: !!successfulItineraries[tripType],
     });
 
     setForm(emptyForm());
     setAttempted(false);
     setAttemptResult(null);
     setCurrentHint(null);
-    setSuccessfulItineraries(prev => ({
+    setSuccessfulItineraries((prev) => ({
       ...prev,
-      [tripType]: null
+      [tripType]: null,
     }));
   };
 
   // -----------------------------
   // Completion gate
   // -----------------------------
+  // Participants must successfully complete all trip types
+  // before proceeding, ensuring equivalent task exposure
   const canContinue =
     successfulItineraries.oneWay &&
     successfulItineraries.roundTrip &&
@@ -349,6 +386,8 @@ export default function SystemA({
   // -----------------------------
   // Render
   // -----------------------------
+  // UI intentionally allows invalid states and late feedback.
+  // This is the defining contrast with System B.
   return (
     <>
       <h1>System A: Flexible Search</h1>
@@ -359,13 +398,15 @@ export default function SystemA({
             Origin:
             <select
               value={form.origin}
-              onChange={e =>
-                setForm(prev => ({ ...prev, origin: e.target.value }))
+              onChange={(e) =>
+                setForm((prev) => ({ ...prev, origin: e.target.value }))
               }
             >
               <option value="">Select origin</option>
-              {allOrigins.map(o => (
-                <option key={o} value={o}>{o}</option>
+              {allOrigins.map((o) => (
+                <option key={o} value={o}>
+                  {o}
+                </option>
               ))}
             </select>
           </label>
@@ -376,15 +417,17 @@ export default function SystemA({
             Destination:
             <select
               value={form.destination}
-              onChange={e =>
-                setForm(prev => ({ ...prev, destination: e.target.value }))
+              onChange={(e) =>
+                setForm((prev) => ({ ...prev, destination: e.target.value }))
               }
             >
               <option value="">Select destination</option>
               {allDestinations
-                .filter(d => d !== form.origin)
-                .map(d => (
-                  <option key={d} value={d}>{d}</option>
+                .filter((d) => d !== form.origin)
+                .map((d) => (
+                  <option key={d} value={d}>
+                    {d}
+                  </option>
                 ))}
             </select>
           </label>
@@ -398,8 +441,8 @@ export default function SystemA({
               min={outboundBounds?.min}
               max={outboundBounds?.max}
               value={form.departDate}
-              onChange={e =>
-                setForm(prev => ({ ...prev, departDate: e.target.value }))
+              onChange={(e) =>
+                setForm((prev) => ({ ...prev, departDate: e.target.value }))
               }
             />
           </label>
@@ -417,8 +460,8 @@ export default function SystemA({
               max={returnMax}
               value={form.returnDate}
               disabled={returnDisabled}
-              onChange={e =>
-                setForm(prev => ({ ...prev, returnDate: e.target.value }))
+              onChange={(e) =>
+                setForm((prev) => ({ ...prev, returnDate: e.target.value }))
               }
             />
           </label>
@@ -440,15 +483,15 @@ export default function SystemA({
               <select
                 value={leg.origin}
                 disabled={i > 0}
-                onChange={e =>
-                  updateLeg(i, "origin", e.target.value)
-                }
+                onChange={(e) => updateLeg(i, "origin", e.target.value)}
               >
                 {i === 0 ? (
                   <>
                     <option value="">Origin</option>
-                    {allOrigins.map(o => (
-                      <option key={o} value={o}>{o}</option>
+                    {allOrigins.map((o) => (
+                      <option key={o} value={o}>
+                        {o}
+                      </option>
                     ))}
                   </>
                 ) : (
@@ -458,15 +501,15 @@ export default function SystemA({
 
               <select
                 value={leg.destination}
-                onChange={e =>
-                  updateLeg(i, "destination", e.target.value)
-                }
+                onChange={(e) => updateLeg(i, "destination", e.target.value)}
               >
                 <option value="">Destination</option>
                 {allDestinations
-                  .filter(d => d !== leg.origin)
-                  .map(d => (
-                    <option key={d} value={d}>{d}</option>
+                  .filter((d) => d !== leg.origin)
+                  .map((d) => (
+                    <option key={d} value={d}>
+                      {d}
+                    </option>
                   ))}
               </select>
 
@@ -475,35 +518,30 @@ export default function SystemA({
                   leg.origin,
                   leg.destination
                 );
-              
-                const prevDate =
-                  i > 0 ? form.legs[i - 1].departDate : null;
-              
+
+                const prevDate = i > 0 ? form.legs[i - 1].departDate : null;
+
                 const minDate =
                   bounds?.min && prevDate
                     ? new Date(prevDate) > new Date(bounds.min)
                       ? prevDate
                       : bounds.min
                     : bounds?.min || prevDate || undefined;
-              
+
                 const maxDate = bounds?.max;
-              
+
                 return (
                   <input
                     type="date"
                     min={minDate}
                     max={maxDate}
                     value={leg.departDate}
-                    onChange={e =>
-                      updateLeg(i, "departDate", e.target.value)
-                    }
+                    onChange={(e) => updateLeg(i, "departDate", e.target.value)}
                   />
                 );
               })()}
 
-              {i > 0 && (
-                <button onClick={() => deleteLeg(i)}>Remove</button>
-              )}
+              {i > 0 && <button onClick={() => deleteLeg(i)}>Remove</button>}
             </div>
           ))}
 
@@ -520,9 +558,7 @@ export default function SystemA({
 
       {attempted &&
         Array.isArray(attemptResult) &&
-        attemptResult.length === 0 && (
-          <p>No results found.</p>
-        )}
+        attemptResult.length === 0 && <p>No results found.</p>}
 
       {currentHint && (
         <div style={{ marginTop: 12, color: "#555" }}>
@@ -551,9 +587,9 @@ export default function SystemA({
         disabled={!canContinue}
         style={{
           opacity: canContinue ? 1 : 0.5,
-          cursor: canContinue ? "pointer" : "not-allowed"
+          cursor: canContinue ? "pointer" : "not-allowed",
         }}
-       >
+      >
         Continue to System B
       </button>
     </>
