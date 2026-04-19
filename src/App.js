@@ -1,4 +1,3 @@
-
 // App.js
 // Main application component for the ItinERAtor experiment.
 //

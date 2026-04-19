@@ -1,0 +1,3150 @@
+{
+  "participantId": "8fb7fd7a-4280-43aa-a74e-44ff57a19133",
+  "meta": {
+    "createdAt": "2026-04-17T07:22:30.713Z",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.3.1 Safari/605.1.15",
+    "condition": "oneWay"
+  },
+  "experiment": {
+    "events": [
+      {
+        "system": "experiment",
+        "type": "trip_type_init",
+        "payload": {
+          "tripType": "oneWay"
+        },
+        "timestamp": 8618
+      },
+      {
+        "system": "experiment",
+        "type": "trip_type_change",
+        "payload": {
+          "tripType": "roundTrip"
+        },
+        "timestamp": 62765
+      },
+      {
+        "system": "experiment",
+        "type": "trip_type_change",
+        "payload": {
+          "tripType": "multiCity"
+        },
+        "timestamp": 785659
+      },
+      {
+        "system": "experiment",
+        "type": "trip_type_change",
+        "payload": {
+          "tripType": "oneWay"
+        },
+        "timestamp": 787631
+      },
+      {
+        "system": "experiment",
+        "type": "trip_type_change",
+        "payload": {
+          "tripType": "roundTrip"
+        },
+        "timestamp": 790209.0000000001
+      },
+      {
+        "system": "experiment",
+        "type": "trip_type_change",
+        "payload": {
+          "tripType": "multiCity"
+        },
+        "timestamp": 792911
+      },
+      {
+        "system": "experiment",
+        "type": "trip_type_init",
+        "payload": {
+          "tripType": "oneWay"
+        },
+        "timestamp": 893846
+      },
+      {
+        "system": "experiment",
+        "type": "trip_type_change",
+        "payload": {
+          "tripType": "roundTrip"
+        },
+        "timestamp": 901760
+      },
+      {
+        "system": "experiment",
+        "type": "trip_type_change",
+        "payload": {
+          "tripType": "multiCity"
+        },
+        "timestamp": 914380
+      },
+      {
+        "system": "experiment",
+        "type": "sus_started",
+        "payload": {
+          "system": "systemA"
+        },
+        "timestamp": 959129
+      },
+      {
+        "system": "experiment",
+        "type": "sus_started",
+        "payload": {
+          "system": "systemB"
+        },
+        "timestamp": 1403834
+      }
+    ]
+  },
+  "systemA": {
+    "startTime": 8623,
+    "endTime": 893845,
+    "completed": true,
+    "events": [
+      {
+        "system": "systemA",
+        "type": "consent_checkbox",
+        "payload": {
+          "value": true
+        },
+        "timestamp": 6435.000000000001
+      },
+      {
+        "system": "systemA",
+        "type": "consent_given",
+        "payload": {
+          "timestamp": 7049
+        },
+        "timestamp": 7049
+      },
+      {
+        "system": "systemA",
+        "type": "instructions_begin",
+        "payload": {},
+        "timestamp": 8615
+      },
+      {
+        "system": "systemA",
+        "type": "system_start",
+        "payload": {},
+        "timestamp": 8618
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "JFK",
+          "destination": "LAX",
+          "departDate": "2026-04-29",
+          "returnDate": "",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "oneWay"
+        },
+        "timestamp": 19291
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 19291
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "JFK",
+          "destination": "LAX",
+          "departDate": "2026-04-30",
+          "returnDate": "",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "oneWay"
+        },
+        "timestamp": 23548
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 23548
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "JFK",
+          "destination": "LAX",
+          "departDate": "2026-05-01",
+          "returnDate": "",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "oneWay"
+        },
+        "timestamp": 29973
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 29973
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "JFK",
+          "destination": "LAX",
+          "departDate": "2026-05-02",
+          "returnDate": "",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "oneWay"
+        },
+        "timestamp": 33747
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 33747
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "JFK",
+          "destination": "LAX",
+          "departDate": "2026-05-03",
+          "returnDate": "",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "oneWay"
+        },
+        "timestamp": 37891
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "oneWay",
+          "hintType": "date_unavailable",
+          "failureCount": 5
+        },
+        "timestamp": 37892
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 37892
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "JFK",
+          "destination": "LAX",
+          "departDate": "2026-05-04",
+          "returnDate": "",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "oneWay"
+        },
+        "timestamp": 42398
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "oneWay",
+          "hintType": "date_unavailable",
+          "failureCount": 6
+        },
+        "timestamp": 42398
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 42398
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "JFK",
+          "destination": "LAX",
+          "departDate": "2026-05-05",
+          "returnDate": "",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "oneWay"
+        },
+        "timestamp": 45420
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "oneWay",
+          "hintType": "date_unavailable",
+          "failureCount": 7
+        },
+        "timestamp": 45420
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 45420
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "JFK",
+          "destination": "LAX",
+          "departDate": "2026-05-06",
+          "returnDate": "",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "oneWay"
+        },
+        "timestamp": 49533
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "oneWay",
+          "hintType": "date_unavailable",
+          "failureCount": 8
+        },
+        "timestamp": 49533
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 49533
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "JFK",
+          "destination": "LAX",
+          "departDate": "2026-05-07",
+          "returnDate": "",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "oneWay"
+        },
+        "timestamp": 53197
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "oneWay",
+          "hintType": "date_unavailable",
+          "failureCount": 9
+        },
+        "timestamp": 53197
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 53197
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "JFK",
+          "destination": "LAX",
+          "departDate": "2026-05-08",
+          "returnDate": "",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "oneWay"
+        },
+        "timestamp": 56534
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "oneWay",
+          "hintType": "date_unavailable",
+          "failureCount": 10
+        },
+        "timestamp": 56534
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 56534
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "JFK",
+          "destination": "LAX",
+          "departDate": "2026-05-09",
+          "returnDate": "",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "oneWay"
+        },
+        "timestamp": 60257
+      },
+      {
+        "system": "systemA",
+        "type": "results_returned",
+        "payload": {
+          "count": 1
+        },
+        "timestamp": 60257
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "JFK",
+          "destination": "LAX",
+          "departDate": "2026-05-09",
+          "returnDate": "2026-05-09",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "roundTrip"
+        },
+        "timestamp": 98211
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 98211
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "JFK",
+          "destination": "LAX",
+          "departDate": "2026-05-09",
+          "returnDate": "2026-05-10",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "roundTrip"
+        },
+        "timestamp": 102374
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 102374
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "JFK",
+          "destination": "LAX",
+          "departDate": "2026-05-09",
+          "returnDate": "2026-05-11",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "roundTrip"
+        },
+        "timestamp": 105699
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 105699
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "JFK",
+          "destination": "LAX",
+          "departDate": "2026-05-09",
+          "returnDate": "2026-05-12",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "roundTrip"
+        },
+        "timestamp": 108816
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 108816
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "JFK",
+          "destination": "LAX",
+          "departDate": "2026-05-09",
+          "returnDate": "2026-05-13",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "roundTrip"
+        },
+        "timestamp": 111406
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "roundTrip",
+          "hintType": "no_return",
+          "failureCount": 5
+        },
+        "timestamp": 111406
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 111406
+      },
+      {
+        "system": "systemA",
+        "type": "reset_search",
+        "payload": {
+          "tripType": "roundTrip",
+          "hadSuccess": false
+        },
+        "timestamp": 128814
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "JFK",
+          "destination": "SFO",
+          "departDate": "2026-04-30",
+          "returnDate": "2026-05-17",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "roundTrip"
+        },
+        "timestamp": 157829
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "roundTrip",
+          "hintType": "no_return",
+          "failureCount": 6
+        },
+        "timestamp": 157829
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 157829
+      },
+      {
+        "system": "systemA",
+        "type": "reset_search",
+        "payload": {
+          "tripType": "roundTrip",
+          "hadSuccess": false
+        },
+        "timestamp": 177098
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "JFK",
+          "destination": "SEA",
+          "departDate": "2026-04-30",
+          "returnDate": "2026-05-17",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "roundTrip"
+        },
+        "timestamp": 194113
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "roundTrip",
+          "hintType": "no_return",
+          "failureCount": 7
+        },
+        "timestamp": 194113
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 194113
+      },
+      {
+        "system": "systemA",
+        "type": "reset_search",
+        "payload": {
+          "tripType": "roundTrip",
+          "hadSuccess": false
+        },
+        "timestamp": 197265.00000000003
+      },
+      {
+        "system": "systemA",
+        "type": "reset_search",
+        "payload": {
+          "tripType": "roundTrip",
+          "hadSuccess": false
+        },
+        "timestamp": 218192
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "JFK",
+          "destination": "DEN",
+          "departDate": "2026-04-17",
+          "returnDate": "2026-05-17",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "roundTrip"
+        },
+        "timestamp": 234242.00000000003
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "roundTrip",
+          "hintType": "route_may_not_exist",
+          "failureCount": 8
+        },
+        "timestamp": 234243
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 234243
+      },
+      {
+        "system": "systemA",
+        "type": "reset_search",
+        "payload": {
+          "tripType": "roundTrip",
+          "hadSuccess": false
+        },
+        "timestamp": 239429
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "JFK",
+          "destination": "ATL",
+          "departDate": "2026-04-17",
+          "returnDate": "2026-05-17",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "roundTrip"
+        },
+        "timestamp": 251686
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "roundTrip",
+          "hintType": "route_may_not_exist",
+          "failureCount": 9
+        },
+        "timestamp": 251686
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 251686
+      },
+      {
+        "system": "systemA",
+        "type": "reset_search",
+        "payload": {
+          "tripType": "roundTrip",
+          "hadSuccess": false
+        },
+        "timestamp": 255238
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "JFK",
+          "destination": "DFW",
+          "departDate": "2026-04-17",
+          "returnDate": "2026-05-17",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "roundTrip"
+        },
+        "timestamp": 267964
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "roundTrip",
+          "hintType": "route_may_not_exist",
+          "failureCount": 10
+        },
+        "timestamp": 267964
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 267964
+      },
+      {
+        "system": "systemA",
+        "type": "reset_search",
+        "payload": {
+          "tripType": "roundTrip",
+          "hadSuccess": false
+        },
+        "timestamp": 270616
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "JFK",
+          "destination": "MIA",
+          "departDate": "2026-04-17",
+          "returnDate": "2026-05-17",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "roundTrip"
+        },
+        "timestamp": 285597
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "roundTrip",
+          "hintType": "route_may_not_exist",
+          "failureCount": 11
+        },
+        "timestamp": 285597
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 285597
+      },
+      {
+        "system": "systemA",
+        "type": "reset_search",
+        "payload": {
+          "tripType": "roundTrip",
+          "hadSuccess": false
+        },
+        "timestamp": 287479
+      },
+      {
+        "system": "systemA",
+        "type": "reset_search",
+        "payload": {
+          "tripType": "roundTrip",
+          "hadSuccess": false
+        },
+        "timestamp": 312350
+      },
+      {
+        "system": "systemA",
+        "type": "reset_search",
+        "payload": {
+          "tripType": "roundTrip",
+          "hadSuccess": false
+        },
+        "timestamp": 321406
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "ORD",
+          "destination": "SEA",
+          "departDate": "2026-04-17",
+          "returnDate": "2026-05-17",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "roundTrip"
+        },
+        "timestamp": 334505
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "roundTrip",
+          "hintType": "route_may_not_exist",
+          "failureCount": 12
+        },
+        "timestamp": 334505
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 334505
+      },
+      {
+        "system": "systemA",
+        "type": "reset_search",
+        "payload": {
+          "tripType": "roundTrip",
+          "hadSuccess": false
+        },
+        "timestamp": 341385
+      },
+      {
+        "system": "systemA",
+        "type": "reset_search",
+        "payload": {
+          "tripType": "roundTrip",
+          "hadSuccess": false
+        },
+        "timestamp": 352995
+      },
+      {
+        "system": "systemA",
+        "type": "reset_search",
+        "payload": {
+          "tripType": "roundTrip",
+          "hadSuccess": false
+        },
+        "timestamp": 361864.00000000006
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "ORD",
+          "destination": "DFW",
+          "departDate": "2026-04-17",
+          "returnDate": "2026-05-17",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "roundTrip"
+        },
+        "timestamp": 375231
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "roundTrip",
+          "hintType": "route_may_not_exist",
+          "failureCount": 13
+        },
+        "timestamp": 375231
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 375231
+      },
+      {
+        "system": "systemA",
+        "type": "reset_search",
+        "payload": {
+          "tripType": "roundTrip",
+          "hadSuccess": false
+        },
+        "timestamp": 381111
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "ORD",
+          "destination": "MIA",
+          "departDate": "2026-04-17",
+          "returnDate": "2026-05-17",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "roundTrip"
+        },
+        "timestamp": 392387
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "roundTrip",
+          "hintType": "route_may_not_exist",
+          "failureCount": 14
+        },
+        "timestamp": 392387
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 392387
+      },
+      {
+        "system": "systemA",
+        "type": "reset_search",
+        "payload": {
+          "tripType": "roundTrip",
+          "hadSuccess": false
+        },
+        "timestamp": 395416
+      },
+      {
+        "system": "systemA",
+        "type": "reset_search",
+        "payload": {
+          "tripType": "roundTrip",
+          "hadSuccess": false
+        },
+        "timestamp": 408318
+      },
+      {
+        "system": "systemA",
+        "type": "reset_search",
+        "payload": {
+          "tripType": "roundTrip",
+          "hadSuccess": false
+        },
+        "timestamp": 425229
+      },
+      {
+        "system": "systemA",
+        "type": "reset_search",
+        "payload": {
+          "tripType": "roundTrip",
+          "hadSuccess": false
+        },
+        "timestamp": 437959
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "DEN",
+          "destination": "ORD",
+          "departDate": "2026-04-17",
+          "returnDate": "2026-07-13",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "roundTrip"
+        },
+        "timestamp": 459447
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "roundTrip",
+          "hintType": "route_may_not_exist",
+          "failureCount": 15
+        },
+        "timestamp": 459447
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 459447
+      },
+      {
+        "system": "systemA",
+        "type": "reset_search",
+        "payload": {
+          "tripType": "roundTrip",
+          "hadSuccess": false
+        },
+        "timestamp": 466594
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "DEN",
+          "destination": "ATL",
+          "departDate": "2026-04-17",
+          "returnDate": "2026-05-17",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "roundTrip"
+        },
+        "timestamp": 480921
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "roundTrip",
+          "hintType": "route_may_not_exist",
+          "failureCount": 16
+        },
+        "timestamp": 480921
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 480921
+      },
+      {
+        "system": "systemA",
+        "type": "reset_search",
+        "payload": {
+          "tripType": "roundTrip",
+          "hadSuccess": false
+        },
+        "timestamp": 483020
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "DEN",
+          "destination": "DFW",
+          "departDate": "2026-04-17",
+          "returnDate": "2026-06-15",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "roundTrip"
+        },
+        "timestamp": 493598
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "roundTrip",
+          "hintType": "route_may_not_exist",
+          "failureCount": 17
+        },
+        "timestamp": 493599
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 493599
+      },
+      {
+        "system": "systemA",
+        "type": "reset_search",
+        "payload": {
+          "tripType": "roundTrip",
+          "hadSuccess": false
+        },
+        "timestamp": 495332
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "DEN",
+          "destination": "MIA",
+          "departDate": "2026-04-17",
+          "returnDate": "2026-05-17",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "roundTrip"
+        },
+        "timestamp": 507465.00000000006
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "roundTrip",
+          "hintType": "route_may_not_exist",
+          "failureCount": 18
+        },
+        "timestamp": 507465.00000000006
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 507465.00000000006
+      },
+      {
+        "system": "systemA",
+        "type": "reset_search",
+        "payload": {
+          "tripType": "roundTrip",
+          "hadSuccess": false
+        },
+        "timestamp": 510013.00000000006
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "SFO",
+          "destination": "LAX",
+          "departDate": "2026-04-17",
+          "returnDate": "2026-05-17",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "roundTrip"
+        },
+        "timestamp": 521732
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "roundTrip",
+          "hintType": "route_may_not_exist",
+          "failureCount": 19
+        },
+        "timestamp": 521732
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 521732
+      },
+      {
+        "system": "systemA",
+        "type": "reset_search",
+        "payload": {
+          "tripType": "roundTrip",
+          "hadSuccess": false
+        },
+        "timestamp": 523682
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "SFO",
+          "destination": "SEA",
+          "departDate": "2026-04-29",
+          "returnDate": "2026-05-17",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "roundTrip"
+        },
+        "timestamp": 543314
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "roundTrip",
+          "hintType": "no_return",
+          "failureCount": 20
+        },
+        "timestamp": 543314
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 543314
+      },
+      {
+        "system": "systemA",
+        "type": "reset_search",
+        "payload": {
+          "tripType": "roundTrip",
+          "hadSuccess": false
+        },
+        "timestamp": 547845
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "SFO",
+          "destination": "ORD",
+          "departDate": "2026-04-17",
+          "returnDate": "2026-06-16",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "roundTrip"
+        },
+        "timestamp": 558513
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "roundTrip",
+          "hintType": "route_may_not_exist",
+          "failureCount": 21
+        },
+        "timestamp": 558514
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 558514
+      },
+      {
+        "system": "systemA",
+        "type": "reset_search",
+        "payload": {
+          "tripType": "roundTrip",
+          "hadSuccess": false
+        },
+        "timestamp": 560663
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "SFO",
+          "destination": "DEN",
+          "departDate": "2026-04-17",
+          "returnDate": "2026-07-17",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "roundTrip"
+        },
+        "timestamp": 573063
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "roundTrip",
+          "hintType": "route_may_not_exist",
+          "failureCount": 22
+        },
+        "timestamp": 573063
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 573063
+      },
+      {
+        "system": "systemA",
+        "type": "reset_search",
+        "payload": {
+          "tripType": "roundTrip",
+          "hadSuccess": false
+        },
+        "timestamp": 575479
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "SFO",
+          "destination": "ATL",
+          "departDate": "2026-04-17",
+          "returnDate": "2026-05-17",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "roundTrip"
+        },
+        "timestamp": 586852
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "roundTrip",
+          "hintType": "route_may_not_exist",
+          "failureCount": 23
+        },
+        "timestamp": 586852
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 586852
+      },
+      {
+        "system": "systemA",
+        "type": "reset_search",
+        "payload": {
+          "tripType": "roundTrip",
+          "hadSuccess": false
+        },
+        "timestamp": 591890
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "SFO",
+          "destination": "DFW",
+          "departDate": "2026-04-17",
+          "returnDate": "2026-05-17",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "roundTrip"
+        },
+        "timestamp": 601729
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "roundTrip",
+          "hintType": "route_may_not_exist",
+          "failureCount": 24
+        },
+        "timestamp": 601730
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 601730
+      },
+      {
+        "system": "systemA",
+        "type": "reset_search",
+        "payload": {
+          "tripType": "roundTrip",
+          "hadSuccess": false
+        },
+        "timestamp": 605616
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "SFO",
+          "destination": "MIA",
+          "departDate": "2026-04-17",
+          "returnDate": "2026-05-17",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "roundTrip"
+        },
+        "timestamp": 622218
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "roundTrip",
+          "hintType": "route_may_not_exist",
+          "failureCount": 25
+        },
+        "timestamp": 622218
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 622218
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "SFO",
+          "destination": "DFW",
+          "departDate": "2026-04-17",
+          "returnDate": "2026-05-17",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "roundTrip"
+        },
+        "timestamp": 632613
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "roundTrip",
+          "hintType": "route_may_not_exist",
+          "failureCount": 26
+        },
+        "timestamp": 632613
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 632613
+      },
+      {
+        "system": "systemA",
+        "type": "reset_search",
+        "payload": {
+          "tripType": "roundTrip",
+          "hadSuccess": false
+        },
+        "timestamp": 634228.0000000001
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "SEA",
+          "destination": "LAX",
+          "departDate": "2026-04-17",
+          "returnDate": "2026-05-17",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "roundTrip"
+        },
+        "timestamp": 645795
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "roundTrip",
+          "hintType": "route_may_not_exist",
+          "failureCount": 27
+        },
+        "timestamp": 645795
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 645795
+      },
+      {
+        "system": "systemA",
+        "type": "reset_search",
+        "payload": {
+          "tripType": "roundTrip",
+          "hadSuccess": false
+        },
+        "timestamp": 647779
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "SEA",
+          "destination": "SFO",
+          "departDate": "2026-04-17",
+          "returnDate": "2026-05-22",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "roundTrip"
+        },
+        "timestamp": 658400
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "roundTrip",
+          "hintType": "route_may_not_exist",
+          "failureCount": 28
+        },
+        "timestamp": 658400
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 658400
+      },
+      {
+        "system": "systemA",
+        "type": "reset_search",
+        "payload": {
+          "tripType": "roundTrip",
+          "hadSuccess": false
+        },
+        "timestamp": 660444
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "SEA",
+          "destination": "ORD",
+          "departDate": "2026-04-17",
+          "returnDate": "2026-05-17",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "roundTrip"
+        },
+        "timestamp": 672064
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "roundTrip",
+          "hintType": "route_may_not_exist",
+          "failureCount": 29
+        },
+        "timestamp": 672065
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 672065
+      },
+      {
+        "system": "systemA",
+        "type": "reset_search",
+        "payload": {
+          "tripType": "roundTrip",
+          "hadSuccess": false
+        },
+        "timestamp": 675393
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "SEA",
+          "destination": "DEN",
+          "departDate": "2026-04-30",
+          "returnDate": "2026-07-14",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "roundTrip"
+        },
+        "timestamp": 688544
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "roundTrip",
+          "hintType": "general_constraint",
+          "failureCount": 30
+        },
+        "timestamp": 688544
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 688544
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "SEA",
+          "destination": "DEN",
+          "departDate": "2026-05-01",
+          "returnDate": "2026-07-13",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "roundTrip"
+        },
+        "timestamp": 709262
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "roundTrip",
+          "hintType": "general_constraint",
+          "failureCount": 31
+        },
+        "timestamp": 709262
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 709262
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "SEA",
+          "destination": "DEN",
+          "departDate": "2026-05-02",
+          "returnDate": "2026-07-12",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "roundTrip"
+        },
+        "timestamp": 716828
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "roundTrip",
+          "hintType": "general_constraint",
+          "failureCount": 32
+        },
+        "timestamp": 716828
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 716828
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "SEA",
+          "destination": "DEN",
+          "departDate": "2026-05-03",
+          "returnDate": "2026-07-11",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "roundTrip"
+        },
+        "timestamp": 724048
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "roundTrip",
+          "hintType": "general_constraint",
+          "failureCount": 33
+        },
+        "timestamp": 724048
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 724048
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "SEA",
+          "destination": "DEN",
+          "departDate": "2026-05-04",
+          "returnDate": "2026-07-10",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "roundTrip"
+        },
+        "timestamp": 730985
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "roundTrip",
+          "hintType": "general_constraint",
+          "failureCount": 34
+        },
+        "timestamp": 730985
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 730985
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "SEA",
+          "destination": "DEN",
+          "departDate": "2026-05-05",
+          "returnDate": "2026-07-09",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "roundTrip"
+        },
+        "timestamp": 738860
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "roundTrip",
+          "hintType": "general_constraint",
+          "failureCount": 35
+        },
+        "timestamp": 738860
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 738860
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "SEA",
+          "destination": "DEN",
+          "departDate": "2026-05-06",
+          "returnDate": "2026-07-08",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "roundTrip"
+        },
+        "timestamp": 744848.0000000001
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "roundTrip",
+          "hintType": "general_constraint",
+          "failureCount": 36
+        },
+        "timestamp": 744848.0000000001
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 744848.0000000001
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "SEA",
+          "destination": "DEN",
+          "departDate": "2026-05-07",
+          "returnDate": "2026-07-07",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "roundTrip"
+        },
+        "timestamp": 750651.0000000001
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "roundTrip",
+          "hintType": "general_constraint",
+          "failureCount": 37
+        },
+        "timestamp": 750651.0000000001
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 750651.0000000001
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "SEA",
+          "destination": "DEN",
+          "departDate": "2026-05-08",
+          "returnDate": "2026-07-06",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "roundTrip"
+        },
+        "timestamp": 761794
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "roundTrip",
+          "hintType": "general_constraint",
+          "failureCount": 38
+        },
+        "timestamp": 761794
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 761794
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "SEA",
+          "destination": "DEN",
+          "departDate": "2026-05-09",
+          "returnDate": "2026-07-05",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "roundTrip"
+        },
+        "timestamp": 767962
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "roundTrip",
+          "hintType": "general_constraint",
+          "failureCount": 39
+        },
+        "timestamp": 767962
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 767962
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "SEA",
+          "destination": "DEN",
+          "departDate": "2026-05-09",
+          "returnDate": "2026-07-04",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "roundTrip"
+        },
+        "timestamp": 772718
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "roundTrip",
+          "hintType": "general_constraint",
+          "failureCount": 40
+        },
+        "timestamp": 772718
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 772718
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "SEA",
+          "destination": "DEN",
+          "departDate": "2026-05-10",
+          "returnDate": "2026-07-04",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "roundTrip"
+        },
+        "timestamp": 777636
+      },
+      {
+        "system": "systemA",
+        "type": "results_returned",
+        "payload": {
+          "count": 2
+        },
+        "timestamp": 777636
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "",
+          "destination": "",
+          "departDate": "",
+          "returnDate": "",
+          "legs": [
+            {
+              "origin": "SEA",
+              "destination": "DEN",
+              "departDate": "2026-05-10"
+            },
+            {
+              "origin": "DEN",
+              "destination": "LAX",
+              "departDate": "2026-07-16"
+            }
+          ],
+          "tripType": "multiCity"
+        },
+        "timestamp": 816880
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 816881
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "",
+          "destination": "",
+          "departDate": "",
+          "returnDate": "",
+          "legs": [
+            {
+              "origin": "SEA",
+              "destination": "DEN",
+              "departDate": "2026-05-10"
+            },
+            {
+              "origin": "DEN",
+              "destination": "LAX",
+              "departDate": "2026-07-15"
+            }
+          ],
+          "tripType": "multiCity"
+        },
+        "timestamp": 823328
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 823328
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "",
+          "destination": "",
+          "departDate": "",
+          "returnDate": "",
+          "legs": [
+            {
+              "origin": "SEA",
+              "destination": "DEN",
+              "departDate": "2026-05-10"
+            },
+            {
+              "origin": "DEN",
+              "destination": "LAX",
+              "departDate": "2026-07-14"
+            }
+          ],
+          "tripType": "multiCity"
+        },
+        "timestamp": 827063
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 827063
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "",
+          "destination": "",
+          "departDate": "",
+          "returnDate": "",
+          "legs": [
+            {
+              "origin": "SEA",
+              "destination": "DEN",
+              "departDate": "2026-05-10"
+            },
+            {
+              "origin": "DEN",
+              "destination": "LAX",
+              "departDate": "2026-07-13"
+            }
+          ],
+          "tripType": "multiCity"
+        },
+        "timestamp": 830480
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 830480
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "",
+          "destination": "",
+          "departDate": "",
+          "returnDate": "",
+          "legs": [
+            {
+              "origin": "SEA",
+              "destination": "DEN",
+              "departDate": "2026-05-10"
+            },
+            {
+              "origin": "DEN",
+              "destination": "LAX",
+              "departDate": "2026-07-12"
+            }
+          ],
+          "tripType": "multiCity"
+        },
+        "timestamp": 833628
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "multiCity",
+          "hintType": "terminal_airport",
+          "failureCount": 5
+        },
+        "timestamp": 833629
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 833629
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "",
+          "destination": "",
+          "departDate": "",
+          "returnDate": "",
+          "legs": [
+            {
+              "origin": "SEA",
+              "destination": "DEN",
+              "departDate": "2026-05-10"
+            },
+            {
+              "origin": "DEN",
+              "destination": "SFO",
+              "departDate": "2026-07-17"
+            }
+          ],
+          "tripType": "multiCity"
+        },
+        "timestamp": 856191
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "multiCity",
+          "hintType": "general_constraint",
+          "failureCount": 6
+        },
+        "timestamp": 856191
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 856191
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "",
+          "destination": "",
+          "departDate": "",
+          "returnDate": "",
+          "legs": [
+            {
+              "origin": "SEA",
+              "destination": "DEN",
+              "departDate": "2026-05-10"
+            },
+            {
+              "origin": "DEN",
+              "destination": "SFO",
+              "departDate": "2026-07-16"
+            }
+          ],
+          "tripType": "multiCity"
+        },
+        "timestamp": 863511
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "multiCity",
+          "hintType": "general_constraint",
+          "failureCount": 7
+        },
+        "timestamp": 863512
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 863512
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "",
+          "destination": "",
+          "departDate": "",
+          "returnDate": "",
+          "legs": [
+            {
+              "origin": "SEA",
+              "destination": "DEN",
+              "departDate": "2026-05-10"
+            },
+            {
+              "origin": "DEN",
+              "destination": "SFO",
+              "departDate": "2026-07-15"
+            }
+          ],
+          "tripType": "multiCity"
+        },
+        "timestamp": 866693
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "multiCity",
+          "hintType": "general_constraint",
+          "failureCount": 8
+        },
+        "timestamp": 866693
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 866693
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "",
+          "destination": "",
+          "departDate": "",
+          "returnDate": "",
+          "legs": [
+            {
+              "origin": "SEA",
+              "destination": "DEN",
+              "departDate": "2026-05-10"
+            },
+            {
+              "origin": "DEN",
+              "destination": "SFO",
+              "departDate": "2026-07-14"
+            }
+          ],
+          "tripType": "multiCity"
+        },
+        "timestamp": 869361
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "multiCity",
+          "hintType": "general_constraint",
+          "failureCount": 9
+        },
+        "timestamp": 869361
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 869361
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "",
+          "destination": "",
+          "departDate": "",
+          "returnDate": "",
+          "legs": [
+            {
+              "origin": "SEA",
+              "destination": "DEN",
+              "departDate": "2026-05-10"
+            },
+            {
+              "origin": "DEN",
+              "destination": "SFO",
+              "departDate": "2026-07-13"
+            }
+          ],
+          "tripType": "multiCity"
+        },
+        "timestamp": 872377.0000000001
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "multiCity",
+          "hintType": "general_constraint",
+          "failureCount": 10
+        },
+        "timestamp": 872377.0000000001
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 872377.0000000001
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "",
+          "destination": "",
+          "departDate": "",
+          "returnDate": "",
+          "legs": [
+            {
+              "origin": "SEA",
+              "destination": "DEN",
+              "departDate": "2026-05-10"
+            },
+            {
+              "origin": "DEN",
+              "destination": "SFO",
+              "departDate": "2026-07-12"
+            }
+          ],
+          "tripType": "multiCity"
+        },
+        "timestamp": 874910
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "multiCity",
+          "hintType": "general_constraint",
+          "failureCount": 11
+        },
+        "timestamp": 874910
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 874910
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "",
+          "destination": "",
+          "departDate": "",
+          "returnDate": "",
+          "legs": [
+            {
+              "origin": "SEA",
+              "destination": "DEN",
+              "departDate": "2026-05-10"
+            },
+            {
+              "origin": "DEN",
+              "destination": "SFO",
+              "departDate": "2026-07-11"
+            }
+          ],
+          "tripType": "multiCity"
+        },
+        "timestamp": 878544
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "multiCity",
+          "hintType": "general_constraint",
+          "failureCount": 12
+        },
+        "timestamp": 878544
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 878544
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "",
+          "destination": "",
+          "departDate": "",
+          "returnDate": "",
+          "legs": [
+            {
+              "origin": "SEA",
+              "destination": "DEN",
+              "departDate": "2026-05-10"
+            },
+            {
+              "origin": "DEN",
+              "destination": "SFO",
+              "departDate": "2026-07-10"
+            }
+          ],
+          "tripType": "multiCity"
+        },
+        "timestamp": 881180.0000000001
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "multiCity",
+          "hintType": "general_constraint",
+          "failureCount": 13
+        },
+        "timestamp": 881180.0000000001
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 881180.0000000001
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "",
+          "destination": "",
+          "departDate": "",
+          "returnDate": "",
+          "legs": [
+            {
+              "origin": "SEA",
+              "destination": "DEN",
+              "departDate": "2026-05-10"
+            },
+            {
+              "origin": "DEN",
+              "destination": "SFO",
+              "departDate": "2026-07-09"
+            }
+          ],
+          "tripType": "multiCity"
+        },
+        "timestamp": 883829.0000000001
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "multiCity",
+          "hintType": "general_constraint",
+          "failureCount": 14
+        },
+        "timestamp": 883829.0000000001
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 883829.0000000001
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "",
+          "destination": "",
+          "departDate": "",
+          "returnDate": "",
+          "legs": [
+            {
+              "origin": "SEA",
+              "destination": "DEN",
+              "departDate": "2026-05-10"
+            },
+            {
+              "origin": "DEN",
+              "destination": "SFO",
+              "departDate": "2026-07-08"
+            }
+          ],
+          "tripType": "multiCity"
+        },
+        "timestamp": 886314
+      },
+      {
+        "system": "systemA",
+        "type": "hint_shown",
+        "payload": {
+          "tripType": "multiCity",
+          "hintType": "general_constraint",
+          "failureCount": 15
+        },
+        "timestamp": 886314
+      },
+      {
+        "system": "systemA",
+        "type": "zero_results",
+        "payload": {
+          "count": 0
+        },
+        "timestamp": 886314
+      },
+      {
+        "system": "systemA",
+        "type": "submit_search",
+        "payload": {
+          "origin": "",
+          "destination": "",
+          "departDate": "",
+          "returnDate": "",
+          "legs": [
+            {
+              "origin": "SEA",
+              "destination": "DEN",
+              "departDate": "2026-05-10"
+            },
+            {
+              "origin": "DEN",
+              "destination": "SFO",
+              "departDate": "2026-07-07"
+            }
+          ],
+          "tripType": "multiCity"
+        },
+        "timestamp": 889029
+      },
+      {
+        "system": "systemA",
+        "type": "results_returned",
+        "payload": {
+          "count": 2
+        },
+        "timestamp": 889030
+      },
+      {
+        "system": "systemA",
+        "type": "system_complete",
+        "payload": {},
+        "timestamp": 893845
+      }
+    ],
+    "sus": {
+      "responses": [
+        1,
+        3,
+        3,
+        2,
+        4,
+        2,
+        3,
+        3,
+        3,
+        3
+      ],
+      "score": 52.5,
+      "openEnded": {
+        "frustration": "The available choices were not clearly communicated, which made it difficult to understand what options were valid at any given point.",
+        "ease": "The interface itself was easy to navigate, but the overall experience did not go much further than that in terms of usefulness or guidance.",
+        "confusion": "It was unclear how to determine which dates were valid, and there was no obvious guidance to help identify them.",
+        "strategy": "The only effective strategy was repeatedly changing dates and running searches until a valid option appeared. This trial‑and‑error approach was time consuming and very frustrating.",
+        "improvement": "The system should clearly indicate which dates and airports can be combined, so users are not left guessing or forced to experiment blindly."
+      },
+      "completedAt": "2026-04-17T07:45:54.419Z"
+    }
+  },
+  "systemB": {
+    "startTime": 893848.0000000001,
+    "endTime": 959123,
+    "completed": true,
+    "events": [
+      {
+        "system": "systemB",
+        "type": "consent_checkbox",
+        "payload": {
+          "value": true
+        },
+        "timestamp": 6435.000000000001
+      },
+      {
+        "system": "systemB",
+        "type": "consent_given",
+        "payload": {
+          "timestamp": 7049
+        },
+        "timestamp": 7049
+      },
+      {
+        "system": "systemB",
+        "type": "instructions_begin",
+        "payload": {},
+        "timestamp": 8615
+      },
+      {
+        "system": "systemB",
+        "type": "system_start",
+        "payload": {},
+        "timestamp": 893846
+      },
+      {
+        "system": "systemB",
+        "type": "field_change",
+        "payload": {
+          "field": "origin",
+          "value": "JFK",
+          "prevValue": ""
+        },
+        "timestamp": 896060.0000000001
+      },
+      {
+        "system": "systemB",
+        "type": "field_change",
+        "payload": {
+          "field": "destination",
+          "value": "LAX",
+          "prevValue": ""
+        },
+        "timestamp": 897840
+      },
+      {
+        "system": "systemB",
+        "type": "field_change",
+        "payload": {
+          "field": "departDate",
+          "value": "2026-05-09",
+          "prevValue": ""
+        },
+        "timestamp": 899274
+      },
+      {
+        "system": "systemB",
+        "type": "submit_search",
+        "payload": {
+          "origin": "JFK",
+          "destination": "LAX",
+          "departDate": "2026-05-09",
+          "returnDate": "",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "oneWay"
+        },
+        "timestamp": 900496
+      },
+      {
+        "system": "systemB",
+        "type": "results_returned",
+        "payload": {
+          "tripType": "oneWay",
+          "count": 1
+        },
+        "timestamp": 900497.0000000001
+      },
+      {
+        "system": "systemB",
+        "type": "first_success",
+        "payload": {
+          "tripType": "oneWay",
+          "time": 900497.0000000001
+        },
+        "timestamp": 900497.0000000001
+      },
+      {
+        "system": "systemB",
+        "type": "field_change",
+        "payload": {
+          "field": "origin",
+          "value": "DEN",
+          "prevValue": ""
+        },
+        "timestamp": 903608.0000000001
+      },
+      {
+        "system": "systemB",
+        "type": "field_change",
+        "payload": {
+          "field": "origin",
+          "value": "SEA",
+          "prevValue": "DEN"
+        },
+        "timestamp": 906681
+      },
+      {
+        "system": "systemB",
+        "type": "field_change",
+        "payload": {
+          "field": "destination",
+          "value": "DEN",
+          "prevValue": ""
+        },
+        "timestamp": 907874
+      },
+      {
+        "system": "systemB",
+        "type": "field_change",
+        "payload": {
+          "field": "departDate",
+          "value": "2026-05-10",
+          "prevValue": ""
+        },
+        "timestamp": 909828
+      },
+      {
+        "system": "systemB",
+        "type": "field_change",
+        "payload": {
+          "field": "returnDate",
+          "value": "2026-07-02",
+          "prevValue": ""
+        },
+        "timestamp": 911725
+      },
+      {
+        "system": "systemB",
+        "type": "submit_search",
+        "payload": {
+          "origin": "SEA",
+          "destination": "DEN",
+          "departDate": "2026-05-10",
+          "returnDate": "2026-07-02",
+          "legs": [
+            {
+              "origin": "",
+              "destination": "",
+              "departDate": ""
+            }
+          ],
+          "tripType": "roundTrip"
+        },
+        "timestamp": 912894
+      },
+      {
+        "system": "systemB",
+        "type": "results_returned",
+        "payload": {
+          "tripType": "roundTrip",
+          "count": 2
+        },
+        "timestamp": 912894
+      },
+      {
+        "system": "systemB",
+        "type": "submit_search",
+        "payload": {
+          "origin": "",
+          "destination": "",
+          "departDate": "",
+          "returnDate": "",
+          "legs": [
+            {
+              "origin": "JFK",
+              "destination": "SFO",
+              "departDate": "2026-05-10"
+            },
+            {
+              "origin": "SFO",
+              "destination": "SEA",
+              "departDate": "2026-05-11"
+            },
+            {
+              "origin": "SEA",
+              "destination": "DEN",
+              "departDate": "2026-05-12"
+            },
+            {
+              "origin": "DEN",
+              "destination": "SFO",
+              "departDate": "2026-07-06"
+            }
+          ],
+          "tripType": "multiCity"
+        },
+        "timestamp": 956878
+      },
+      {
+        "system": "systemB",
+        "type": "results_returned",
+        "payload": {
+          "tripType": "multiCity",
+          "count": 4
+        },
+        "timestamp": 956878
+      },
+      {
+        "system": "systemB",
+        "type": "system_complete",
+        "payload": {},
+        "timestamp": 959122.0000000001
+      }
+    ],
+    "sus": {
+      "responses": [
+        4,
+        2,
+        4,
+        2,
+        4,
+        2,
+        4,
+        2,
+        4,
+        2
+      ],
+      "score": 75,
+      "openEnded": {
+        "frustration": "The experience was generally straightforward and easy to follow. That said, the number of available choices felt somewhat limited, which reduced flexibility at times.",
+        "ease": "The system automatically presented only viable dates, which removed the need to search or guess. This made the process dramatically easier and far more efficient compared to using System A.",
+        "confusion": "Overall, the system was easy to understand. However, the multi-city trip flow introduced a few minor points of confusion. It would be more intuitive if all airports that could result in valid trips were shown upfront, rather than appearing incrementally.",
+        "strategy": "No specific strategy was required. The system handled the decision making and validation automatically, making the experience effortless and smooth.",
+        "improvement": "Expanding the range of available airport options would improve flexibility while preserving the simplicity of the current experience."
+      },
+      "completedAt": "2026-04-17T07:49:04.084Z"
+    }
+  }
+}
